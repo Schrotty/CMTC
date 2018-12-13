@@ -1,17 +1,56 @@
 grammar Cymbol;
+import Clexer;
 
-/*
- * Parser Rules
- */
+file:   (functionDecl | varDecl)+ ; 
 
-compileUnit
-	:	EOF
+functionDecl
+	:   type ID '(' formalParameters? ')' block
 	;
 
-/*
- * Lexer Rules
- */
+formalParameters
+	:   formalParameter (',' formalParameter)*
+	;
 
-WS
-	:	' ' -> channel(HIDDEN)
+formalParameter 
+	:   type ID
+	;
+
+stat:   block  
+	|   varDecl	           
+	|   ifStat	
+	|   forStat				  
+	|   returnStat ';'    
+	|   assignStat  ';'  
+	|   printStat  ';'   
+	|   expr ';'     
+	;
+	 
+block:  '{' stat* '}' ;   
+
+assignStat:  ID '=' expr ;
+
+ifStat: 'if' '(' expr ')' stat ('else' stat)? ;
+
+forStat: 'for' '(' assignStat ';' expr ';' assignStat ')' block ;
+
+returnStat: 'return' expr ;
+
+args : expr (',' expr)* ;  
+
+printStat: 'printf' '(' expr ')';
+
+varDecl:   type ID ';' ;
+
+type: 'int'; 
+
+expr:   '-' expr     
+	|   '!' expr      
+	|   expr ('*'|'/') expr
+	|   expr ('+'|'-') expr
+	|   expr ('=='|'!='|'<'|'>') expr
+	|   expr '?' expr ':' expr 
+	|   ID                 
+	|   INT              
+	|   '(' expr ')'     
+	|   ID '(' args? ')'   
 	;

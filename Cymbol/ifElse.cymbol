@@ -1,0 +1,11 @@
+int n;
+int main() {
+  int i;
+  n = 1;
+  i = 4;
+  if (n<i)
+    printf(n);
+  else 
+    printf(i);
+  return 0;
+}

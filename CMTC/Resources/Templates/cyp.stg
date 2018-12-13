@@ -1,0 +1,15 @@
+﻿file(funcDecl) ::= <<
+<funcDecl>
+>>
+
+funcDecl(type, id, returnStat) ::= <<
+<type> <id>()
+{
+	<returnStat>
+}
+
+>>
+
+returnStat(expr) ::= <<
+return <expr>;
+>>

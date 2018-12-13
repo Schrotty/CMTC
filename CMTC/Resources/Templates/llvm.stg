@@ -1,0 +1,34 @@
+file(functionDecls) ::=
+<<
+	<functionDecls>
+>>
+
+functionDecl(returnType, identifier, parameter, block) ::=
+<<
+	define <typeMap.(returnType)> @<identifier>(<formalParameters(parameter)>)
+	<block>
+>>
+
+formalParameters(parameter) ::= "<trunc(parameter):formalParameterItem()><typeMap.(last(parameter))>"
+formalParameterItem(type) ::= "<typeMap.(type)>, "
+
+block(statement) ::=
+<<
+{
+	<statement>
+}
+
+>>
+
+varDecl(type) ::= 
+<<
+	%1 = alloca <typeMap.(type)>, align 4
+>>
+
+returnStatement(type, expr) ::= <<
+	ret <typeMap.(type)> <expr>;
+>>
+
+typeMap ::= [
+	"int":"i32"
+]

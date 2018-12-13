@@ -1,0 +1,12 @@
+int f(int a) {
+  return a+10;
+}
+
+int main() {
+  printf(f(20));
+  return 0;
+}
+
+
+
+

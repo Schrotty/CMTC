@@ -1,0 +1,21 @@
+﻿int u;
+
+int f(int x, int y)
+{
+	{
+		int i;
+		i = 42;
+	}
+
+	return x + y;
+}
+
+int g(int z)
+{
+	return z;
+}
+
+int main() 
+{
+	return f(5, 5);
+}

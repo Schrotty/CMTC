@@ -1,0 +1,6 @@
+﻿//EXCEPTIONS
+e1() ::= "Missing input file!"
+e2() ::= "Missing additional parameters!"
+e3(id, line, position) ::= "Symbol <id>@<line>:<position> is already defined!"
+e4(id, line, position) ::= "Symbol <id>@<line>:<position> not defined!"
+e5(id) ::= "Missing/ Unwanted return statement in '<id>'!"

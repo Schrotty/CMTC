@@ -1,0 +1,20 @@
+int i;
+
+int main(int x, int y) {
+  int n;
+  int i;
+  n = 1;
+  i = 4;
+
+  if (n<i)
+	printf(n);
+  else 
+	i=3+4;
+
+  if (true)
+  {
+	int sierra;
+  }
+
+  return 0;
+}
