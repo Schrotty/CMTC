@@ -7,11 +7,13 @@ namespace CMTC.Core.SymTable
     {
         public GlobalScope Global { get; private set; }
         public Stack<IScope> Scopes { get; private set; }
+        public int Position { get; set; }
 
         public SymbolTable()
         {
             Scopes = new Stack<IScope>();
             Global = new GlobalScope(null);
+            Position = 0;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using CMTC.Core.Extensions;
 using CMTC.Core.SymTable;
+using CMTC.Utilities;
 using static CMTC.Core.SymTable.BaseScope;
 using static CMTC.Core.SymTable.Symbol;
 
@@ -22,7 +23,7 @@ namespace CMTC.Core
 
             foreach (var c in context.functionDecl())
             {
-                Visit(c);
+                _symbolTable.Scopes.Peek().AddChild(Visit(c));
             }
 
             return _symbolTable.Scopes.Pop();
@@ -35,7 +36,7 @@ namespace CMTC.Core
                 throw new System.Exception("Nope");
             }
 
-            _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), 
+            _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), _symbolTable.Position++,
                 _symbolTable.Global.Resolve(context.type().Start.Text)));
 
             return _symbolTable.Scopes.Peek();
@@ -53,16 +54,21 @@ namespace CMTC.Core
                     _symbolTable.Global.Define(method);
                     if (context.formalParameters() != null)
                     {
+                        
                         foreach (var c in context.formalParameters().formalParameter())
                         {
-                            method.Define(new Symbol(c.ID().ToString(),
+                            method.Define(new Symbol(c.ID().ToString(), _symbolTable.Position,
                                 _symbolTable.Global.Resolve(c.type().Start.Text)));
+
+                            _symbolTable.Position++;
                         }
                     }
 
                     _symbolTable.Scopes.Push(method);
-                    Visit(context.block());
+                    _symbolTable.Scopes.Peek().AddChild(Visit(context.block()));
 
+                    _symbolTable.Scopes.Peek().SetNextIndex(_symbolTable.Position);
+                    _symbolTable.Position = 0;
                     return _symbolTable.Scopes.Pop();
                 }
 
@@ -85,20 +91,8 @@ namespace CMTC.Core
                 }
             }
 
-            return _symbolTable.Scopes.Pop();
-        }
-
-        public override IScope VisitExpr([NotNull] CymbolParser.ExprContext context)
-        {
-            if (context.expr() != null)
-            {
-                foreach (var c in context.expr())
-                {
-                    Visit(c);
-                }
-            }
-
-            return _symbolTable.Scopes.Peek();
+            var scope = _symbolTable.Scopes.Pop();
+            return _symbolTable.Scopes.Peek().AddChild(scope);
         }
 
         public override IScope VisitTerminal(ITerminalNode node)
@@ -107,7 +101,11 @@ namespace CMTC.Core
             {
                 if (!_symbolTable.Scopes.Peek().VariableIsInScopeNested(node.GetText()))
                 {
-                    throw new System.Exception("");
+                    throw new System.Exception(TemplateManager.GetTemplate("UNDEFINED")
+                        .Add("id", node.Symbol.Text)
+                        .Add("line", node.Symbol.Line)
+                        .Add("position", node.Symbol.Column)
+                        .Render());
                 }
             }
 

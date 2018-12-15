@@ -6,6 +6,7 @@
         {
             public LocalScope(IScope enclosing) : base(enclosing)
             {
+                _enclosing = enclosing;
             }
 
             public override string GetScopeName()

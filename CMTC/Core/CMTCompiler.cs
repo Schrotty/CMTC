@@ -17,6 +17,10 @@ namespace CMTC.Core
             var visitor = new SemanticAnalyser();
             var scope = visitor.Visit(tree);
 
+            var generator = new CodeGenerator(scope);
+            var code = generator.Visit(tree);
+
+            Console.WriteLine(code.Render());
             Console.ReadKey();
         }
 

@@ -8,19 +8,18 @@ namespace CMTC.Core.SymTable
         {
             private Dictionary<string, Symbol> _symbols = new Dictionary<string, Symbol>();
 
-            private List<Symbol> _arguments = new List<Symbol>();
-
             private IScope _enclosing;
+            public IScope Child { get; private set; }
 
-            public MethodSymbol(string name) : base(name)
+            public MethodSymbol(string name) : base(name, 0)
             {
             }
 
-            public MethodSymbol(string name, SymbolType type) : base(name, type)
+            public MethodSymbol(string name, SymbolType type) : base(name, 0, type)
             {
             }
 
-            public MethodSymbol(string name, SymbolType returnType, IScope enclosing) : base(name, returnType)
+            public MethodSymbol(string name, SymbolType returnType, IScope enclosing) : base(name, 0, returnType)
             {
                 _enclosing = enclosing;
             }
@@ -28,6 +27,19 @@ namespace CMTC.Core.SymTable
             public void Define(Symbol symbol)
             {
                 _symbols.Add(symbol.Name, symbol);
+            }
+
+            public Symbol GetChild(string name)
+            {
+                Symbol symbol;
+                _symbols.TryGetValue(name, out symbol);
+
+                return symbol;
+            }
+
+            public IScope GetChild(int index = 0)
+            {
+                return Child;
             }
 
             public IScope GetEnclosingScope()
@@ -40,20 +52,44 @@ namespace CMTC.Core.SymTable
                 return Name;
             }
 
+            public Symbol GetSymbol(string name)
+            {
+                Symbol symbol;
+                _symbols.TryGetValue(name, out symbol);
+
+                return symbol;
+            }
+
             public SymbolType Resolve(string name)
             {
-                Symbol symbol = _arguments.Find(s => s.Name.Equals(name));
+                Symbol symbol = GetSymbol(name);
                 return symbol == null ? SymbolType.NONE : symbol.Type;
             }
 
             public bool VariableIsInScope(string id)
             {
-                return false;
+                return Resolve(id) != Symbol.SymbolType.NONE;
             }
 
             public bool VariableIsInScopeNested(string id)
             {
-                return false;
+                return VariableIsInScope(id);
+            }
+
+            public IScope AddChild(IScope child)
+            {
+                Child = child;
+                return child;
+            }
+
+            public IScope GetMethod(string name)
+            {
+                return Child;
+            }
+
+            public void SetNextIndex(int index)
+            {
+                Position = index;
             }
         }
     }

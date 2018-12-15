@@ -6,8 +6,8 @@
         {
             public GlobalScope(IScope enclosing) : base(enclosing)
             {
-                _symbols.Add("int", new Symbol("int", Symbol.SymbolType.INTEGER));
-                _symbols.Add("void", new Symbol("void", Symbol.SymbolType.VOID));
+                _symbols.Add("int", new Symbol("int", 0, Symbol.SymbolType.INT));
+                _symbols.Add("void", new Symbol("void", 0, Symbol.SymbolType.VOID));
             }
 
             public override string GetScopeName()

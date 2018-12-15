@@ -6,13 +6,15 @@ namespace CMTC.Core.SymTable
     abstract partial class BaseScope : IScope
     {
         private Dictionary<string, Symbol> _symbols = new Dictionary<string, Symbol>();
-
         private IScope _enclosing;
+
+        public List<IScope> Children { get; private set; }
 
         public abstract string GetScopeName();
         public BaseScope(IScope enclosing)
         {
             _enclosing = enclosing;
+            Children = new List<IScope>();
         }
 
         public void Define(Symbol symbol)
@@ -57,6 +59,56 @@ namespace CMTC.Core.SymTable
 
             bool inScope = scope.VariableIsInScope(id);
             return inScope ? true : VariableIsInScopeNested(id, scope.GetEnclosingScope());
+        }
+
+        public Symbol GetChild(string name)
+        {
+            Symbol symbol = new Symbol(name, 0);
+            _symbols.TryGetValue(name, out symbol);
+
+            return symbol;
+        }
+
+        public Symbol GetSymbol(string name)
+        {
+            Symbol symbol;
+            _symbols.TryGetValue(name, out symbol);
+
+            if (symbol == null)
+            {
+                foreach (var child in Children)
+                {
+                    symbol = child.GetSymbol(name);
+                    if (symbol != null)
+                    {
+                        return symbol;
+                    }
+                }
+            }
+
+            return symbol;
+        }
+
+        public IScope GetChild(int index)
+        {
+            return Children[index];
+        }
+
+        public IScope AddChild(IScope child)
+        {
+            Children.Add(child);
+
+            return child;
+        }
+
+        public IScope GetMethod(string name)
+        {
+            return Children.Find(c => c.GetScopeName().Equals(name));
+        }
+
+        public void SetNextIndex(int index)
+        {
+            //nothing
         }
     }
 }

@@ -9,8 +9,14 @@ namespace CMTC.Core.SymTable
         void Define(Symbol symbol);
         IScope GetEnclosingScope();
         SymbolType Resolve(string name);
+        void SetNextIndex(int index);
 
         bool VariableIsInScope(string id);
         bool VariableIsInScopeNested(string id);
+
+        Symbol GetSymbol(string name);
+        IScope GetMethod(string name);
+        IScope GetChild(int index);
+        IScope AddChild(IScope child);
     }
 }

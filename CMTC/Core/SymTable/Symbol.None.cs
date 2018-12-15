@@ -4,7 +4,7 @@
     {
         private class None : Symbol
         {
-            public None(string name, SymbolType type) : base(name, type)
+            public None(string name, SymbolType type) : base(name, 0, type)
             {
 
             }

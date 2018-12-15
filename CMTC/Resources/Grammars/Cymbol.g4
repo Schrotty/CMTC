@@ -43,14 +43,14 @@ varDecl:   type ID ';' ;
 
 type: 'int'; 
 
-expr:   '-' expr     
-	|   '!' expr      
-	|   expr ('*'|'/') expr
-	|   expr ('+'|'-') expr
-	|   expr ('=='|'!='|'<'|'>') expr
-	|   expr '?' expr ':' expr 
-	|   ID                 
-	|   INT              
-	|   '(' expr ')'     
-	|   ID '(' args? ')'   
+expr:   '-' expr						#subExpr
+	|   '!' expr						#notExpr
+	|   expr ('*'|'/') expr				#multiDivExpr
+	|   expr ('+'|'-') expr				#addSubExpr
+	|   expr ('=='|'!='|'<'|'>') expr	#compareExpr
+	|   expr '?' expr ':' expr			#shortIfExpr
+	|   ID								#id
+	|   INT								#int
+	|   '(' expr ')'					#bracketExpr
+	|   ID '(' args? ')'				#methodCallExpr
 	;

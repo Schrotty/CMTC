@@ -1,16 +1,21 @@
-file(functionDecls) ::=
+file(functionDecls, variableDecls) ::=
 <<
+	<variableDecls>
 	<functionDecls>
 >>
 
 functionDecl(returnType, identifier, parameter, block) ::=
 <<
-	define <typeMap.(returnType)> @<identifier>(<formalParameters(parameter)>)
+	define <typeMap.(returnType)> @<identifier>(<parameter>)
 	<block>
 >>
 
 formalParameters(parameter) ::= "<trunc(parameter):formalParameterItem()><typeMap.(last(parameter))>"
 formalParameterItem(type) ::= "<typeMap.(type)>, "
+
+statement(statement) ::= <<
+	<statement>
+>>
 
 block(statement) ::=
 <<
@@ -20,15 +25,59 @@ block(statement) ::=
 
 >>
 
-varDecl(type) ::= 
+varDecl(id, type) ::= 
 <<
-	%1 = alloca <typeMap.(type)>, align 4
+	%<id> = alloca <typeMap.(type)> <typeDefaultValues.(type)>
+
 >>
 
-returnStatement(type, expr) ::= <<
-	ret <typeMap.(type)> <expr>;
+globalVarDecl(id, type) ::= <<
+	@<id> common global <typeMap.(type)> <typeDefaultValues.(type)>
+
 >>
+
+returnStatement(type, expression, result) ::= <<
+	<expression>
+
+	ret <typeMap.(type)> %<result>
+>>
+
+methodCallExpr(index, id, type, args) ::= <<
+	%<index> = call <typeMap.(type)> @<id>(<args>)
+
+>>
+
+args(parameter) ::= "<trunc(parameter):arg()><typeMap.(last(parameter))>"
+arg(type) ::= "<typeMap.(type)>, "
+
+addSubExpr(index, type, op, op1, op2, expression) ::= <<
+	<expression>
+
+	%<index> = <opMap.(op)> <typeMap.(type)> <op1>, <op2>
+
+>>
+
+storeValue(type, source, target) ::= <<
+	store <typeMap.(type)> <source>, <typeMap.(type)>* %<target>
+
+>>
+
+loadValue(target, type, source) ::= <<
+	%<target> = load <typeMap.(type)>, <typeMap.(type)>* <source>
+
+>>
+
+int(value) ::= "<value>"
+
+opMap ::= [
+	"+":"add",
+	"-":"sub"
+]
 
 typeMap ::= [
 	"int":"i32"
+]
+
+typeDefaultValues ::= [
+	"int":"0"
 ]

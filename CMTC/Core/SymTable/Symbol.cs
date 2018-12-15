@@ -8,18 +8,20 @@
         {
             NONE,
             VOID,
-            INTEGER
+            INT
         }
 
         internal string Name { get; private set; }
         internal SymbolType Type { get; private set; }
+        internal int Position { get; set; }
 
-        public Symbol(string name)
+        public Symbol(string name, int pos)
         {
             Name = name;
+            Position = pos;
         }
 
-        public Symbol(string name, SymbolType type) : this(name)
+        public Symbol(string name, int pos, SymbolType type) : this(name, pos)
         {
             Type = type;
         }

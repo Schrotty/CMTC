@@ -950,33 +950,213 @@ public partial class CymbolParser : Parser {
 	}
 
 	public partial class ExprContext : ParserRuleContext {
+		public ExprContext(ParserRuleContext parent, int invokingState)
+			: base(parent, invokingState)
+		{
+		}
+		public override int RuleIndex { get { return RULE_expr; } }
+	 
+		public ExprContext() { }
+		public virtual void CopyFrom(ExprContext context) {
+			base.CopyFrom(context);
+		}
+	}
+	public partial class MethodCallExprContext : ExprContext {
+		public ITerminalNode ID() { return GetToken(CymbolParser.ID, 0); }
+		public ArgsContext args() {
+			return GetRuleContext<ArgsContext>(0);
+		}
+		public MethodCallExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterMethodCallExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitMethodCallExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMethodCallExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class NotExprContext : ExprContext {
+		public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public NotExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterNotExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitNotExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitNotExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class AddSubExprContext : ExprContext {
 		public ExprContext[] expr() {
 			return GetRuleContexts<ExprContext>();
 		}
 		public ExprContext expr(int i) {
 			return GetRuleContext<ExprContext>(i);
 		}
-		public ITerminalNode ID() { return GetToken(CymbolParser.ID, 0); }
-		public ITerminalNode INT() { return GetToken(CymbolParser.INT, 0); }
-		public ArgsContext args() {
-			return GetRuleContext<ArgsContext>(0);
-		}
-		public ExprContext(ParserRuleContext parent, int invokingState)
-			: base(parent, invokingState)
-		{
-		}
-		public override int RuleIndex { get { return RULE_expr; } }
+		public AddSubExprContext(ExprContext context) { CopyFrom(context); }
 		public override void EnterRule(IParseTreeListener listener) {
 			ICymbolListener typedListener = listener as ICymbolListener;
-			if (typedListener != null) typedListener.EnterExpr(this);
+			if (typedListener != null) typedListener.EnterAddSubExpr(this);
 		}
 		public override void ExitRule(IParseTreeListener listener) {
 			ICymbolListener typedListener = listener as ICymbolListener;
-			if (typedListener != null) typedListener.ExitExpr(this);
+			if (typedListener != null) typedListener.ExitAddSubExpr(this);
 		}
 		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
 			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
-			if (typedVisitor != null) return typedVisitor.VisitExpr(this);
+			if (typedVisitor != null) return typedVisitor.VisitAddSubExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class BracketExprContext : ExprContext {
+		public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public BracketExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterBracketExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitBracketExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitBracketExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class ShortIfExprContext : ExprContext {
+		public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
+		}
+		public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
+		}
+		public ShortIfExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterShortIfExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitShortIfExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitShortIfExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class MultiDivExprContext : ExprContext {
+		public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
+		}
+		public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
+		}
+		public MultiDivExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterMultiDivExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitMultiDivExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitMultiDivExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class IdContext : ExprContext {
+		public ITerminalNode ID() { return GetToken(CymbolParser.ID, 0); }
+		public IdContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterId(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitId(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitId(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class SubExprContext : ExprContext {
+		public ExprContext expr() {
+			return GetRuleContext<ExprContext>(0);
+		}
+		public SubExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterSubExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitSubExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitSubExpr(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class IntContext : ExprContext {
+		public ITerminalNode INT() { return GetToken(CymbolParser.INT, 0); }
+		public IntContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterInt(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitInt(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitInt(this);
+			else return visitor.VisitChildren(this);
+		}
+	}
+	public partial class CompareExprContext : ExprContext {
+		public ExprContext[] expr() {
+			return GetRuleContexts<ExprContext>();
+		}
+		public ExprContext expr(int i) {
+			return GetRuleContext<ExprContext>(i);
+		}
+		public CompareExprContext(ExprContext context) { CopyFrom(context); }
+		public override void EnterRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.EnterCompareExpr(this);
+		}
+		public override void ExitRule(IParseTreeListener listener) {
+			ICymbolListener typedListener = listener as ICymbolListener;
+			if (typedListener != null) typedListener.ExitCompareExpr(this);
+		}
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			ICymbolVisitor<TResult> typedVisitor = visitor as ICymbolVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitCompareExpr(this);
 			else return visitor.VisitChildren(this);
 		}
 	}
@@ -1003,28 +1183,44 @@ public partial class CymbolParser : Parser {
 			switch ( Interpreter.AdaptivePredict(TokenStream,9,Context) ) {
 			case 1:
 				{
+				_localctx = new SubExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
+
 				State = 129; Match(T__13);
 				State = 130; expr(10);
 				}
 				break;
 			case 2:
 				{
+				_localctx = new NotExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
 				State = 131; Match(T__14);
 				State = 132; expr(9);
 				}
 				break;
 			case 3:
 				{
+				_localctx = new IdContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
 				State = 133; Match(ID);
 				}
 				break;
 			case 4:
 				{
+				_localctx = new IntContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
 				State = 134; Match(INT);
 				}
 				break;
 			case 5:
 				{
+				_localctx = new BracketExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
 				State = 135; Match(T__0);
 				State = 136; expr(0);
 				State = 137; Match(T__1);
@@ -1032,6 +1228,9 @@ public partial class CymbolParser : Parser {
 				break;
 			case 6:
 				{
+				_localctx = new MethodCallExprContext(_localctx);
+				Context = _localctx;
+				_prevctx = _localctx;
 				State = 139; Match(ID);
 				State = 140; Match(T__0);
 				State = 142;
@@ -1062,7 +1261,7 @@ public partial class CymbolParser : Parser {
 					switch ( Interpreter.AdaptivePredict(TokenStream,10,Context) ) {
 					case 1:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new MultiDivExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
 						State = 147;
 						if (!(Precpred(Context, 8))) throw new FailedPredicateException(this, "Precpred(Context, 8)");
@@ -1080,7 +1279,7 @@ public partial class CymbolParser : Parser {
 						break;
 					case 2:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new AddSubExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
 						State = 150;
 						if (!(Precpred(Context, 7))) throw new FailedPredicateException(this, "Precpred(Context, 7)");
@@ -1098,7 +1297,7 @@ public partial class CymbolParser : Parser {
 						break;
 					case 3:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new CompareExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
 						State = 153;
 						if (!(Precpred(Context, 6))) throw new FailedPredicateException(this, "Precpred(Context, 6)");
@@ -1116,7 +1315,7 @@ public partial class CymbolParser : Parser {
 						break;
 					case 4:
 						{
-						_localctx = new ExprContext(_parentctx, _parentState);
+						_localctx = new ShortIfExprContext(new ExprContext(_parentctx, _parentState));
 						PushNewRecursionContext(_localctx, _startState, RULE_expr);
 						State = 156;
 						if (!(Precpred(Context, 5))) throw new FailedPredicateException(this, "Precpred(Context, 5)");
