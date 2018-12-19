@@ -21,6 +21,7 @@ namespace CMTC.Core
                 Visit(c);
             }
 
+            _symbolTable.IsGlobal = false;
             foreach (var c in context.functionDecl())
             {
                 _symbolTable.Scopes.Peek().AddChild(Visit(c));
@@ -36,7 +37,13 @@ namespace CMTC.Core
                 throw new System.Exception("Nope");
             }
 
-            _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), _symbolTable.Position++,
+            var id = 0;
+            if (!_symbolTable.IsGlobal)
+            {
+                id = _symbolTable.Position++;
+            }
+
+            _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), id,
                 _symbolTable.Global.Resolve(context.type().Start.Text)));
 
             return _symbolTable.Scopes.Peek();
@@ -54,7 +61,6 @@ namespace CMTC.Core
                     _symbolTable.Global.Define(method);
                     if (context.formalParameters() != null)
                     {
-                        
                         foreach (var c in context.formalParameters().formalParameter())
                         {
                             method.Define(new Symbol(c.ID().ToString(), _symbolTable.Position,
@@ -81,6 +87,8 @@ namespace CMTC.Core
         public override IScope VisitBlock([NotNull] CymbolParser.BlockContext context)
         {
             LocalScope local = new LocalScope(_symbolTable.Scopes.Peek());
+
+            _symbolTable.Scopes.Peek().AddChild(local);
             _symbolTable.Scopes.Push(local);
 
             if (context.stat() != null)

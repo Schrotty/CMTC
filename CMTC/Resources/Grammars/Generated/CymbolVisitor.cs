@@ -116,73 +116,21 @@ public interface ICymbolVisitor<Result> : IParseTreeVisitor<Result> {
 	/// <return>The visitor result.</return>
 	Result VisitType([NotNull] CymbolParser.TypeContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>methodCallExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Visit a parse tree produced by <see cref="CymbolParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
-	Result VisitMethodCallExpr([NotNull] CymbolParser.MethodCallExprContext context);
+	Result VisitExpr([NotNull] CymbolParser.ExprContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>notExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitNotExpr([NotNull] CymbolParser.NotExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>addSubExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitAddSubExpr([NotNull] CymbolParser.AddSubExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>bracketExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitBracketExpr([NotNull] CymbolParser.BracketExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>shortIfExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitShortIfExpr([NotNull] CymbolParser.ShortIfExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>multiDivExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitMultiDivExpr([NotNull] CymbolParser.MultiDivExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>id</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Visit a parse tree produced by <see cref="CymbolParser.id"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitId([NotNull] CymbolParser.IdContext context);
 	/// <summary>
-	/// Visit a parse tree produced by the <c>subExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitSubExpr([NotNull] CymbolParser.SubExprContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>int</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Visit a parse tree produced by <see cref="CymbolParser.int"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	/// <return>The visitor result.</return>
 	Result VisitInt([NotNull] CymbolParser.IntContext context);
-	/// <summary>
-	/// Visit a parse tree produced by the <c>compareExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	/// <return>The visitor result.</return>
-	Result VisitCompareExpr([NotNull] CymbolParser.CompareExprContext context);
 }

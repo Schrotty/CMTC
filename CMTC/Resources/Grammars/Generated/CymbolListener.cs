@@ -171,123 +171,33 @@ public interface ICymbolListener : IParseTreeListener {
 	/// <param name="context">The parse tree.</param>
 	void ExitType([NotNull] CymbolParser.TypeContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>methodCallExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Enter a parse tree produced by <see cref="CymbolParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void EnterMethodCallExpr([NotNull] CymbolParser.MethodCallExprContext context);
+	void EnterExpr([NotNull] CymbolParser.ExprContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>methodCallExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Exit a parse tree produced by <see cref="CymbolParser.expr"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
-	void ExitMethodCallExpr([NotNull] CymbolParser.MethodCallExprContext context);
+	void ExitExpr([NotNull] CymbolParser.ExprContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>notExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterNotExpr([NotNull] CymbolParser.NotExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>notExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitNotExpr([NotNull] CymbolParser.NotExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>addSubExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterAddSubExpr([NotNull] CymbolParser.AddSubExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>addSubExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitAddSubExpr([NotNull] CymbolParser.AddSubExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>bracketExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterBracketExpr([NotNull] CymbolParser.BracketExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>bracketExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitBracketExpr([NotNull] CymbolParser.BracketExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>shortIfExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterShortIfExpr([NotNull] CymbolParser.ShortIfExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>shortIfExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitShortIfExpr([NotNull] CymbolParser.ShortIfExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>multiDivExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterMultiDivExpr([NotNull] CymbolParser.MultiDivExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>multiDivExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitMultiDivExpr([NotNull] CymbolParser.MultiDivExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>id</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Enter a parse tree produced by <see cref="CymbolParser.id"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void EnterId([NotNull] CymbolParser.IdContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>id</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Exit a parse tree produced by <see cref="CymbolParser.id"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitId([NotNull] CymbolParser.IdContext context);
 	/// <summary>
-	/// Enter a parse tree produced by the <c>subExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterSubExpr([NotNull] CymbolParser.SubExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>subExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitSubExpr([NotNull] CymbolParser.SubExprContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>int</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Enter a parse tree produced by <see cref="CymbolParser.int"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void EnterInt([NotNull] CymbolParser.IntContext context);
 	/// <summary>
-	/// Exit a parse tree produced by the <c>int</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
+	/// Exit a parse tree produced by <see cref="CymbolParser.int"/>.
 	/// </summary>
 	/// <param name="context">The parse tree.</param>
 	void ExitInt([NotNull] CymbolParser.IntContext context);
-	/// <summary>
-	/// Enter a parse tree produced by the <c>compareExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void EnterCompareExpr([NotNull] CymbolParser.CompareExprContext context);
-	/// <summary>
-	/// Exit a parse tree produced by the <c>compareExpr</c>
-	/// labeled alternative in <see cref="CymbolParser.expr"/>.
-	/// </summary>
-	/// <param name="context">The parse tree.</param>
-	void ExitCompareExpr([NotNull] CymbolParser.CompareExprContext context);
 }

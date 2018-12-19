@@ -15,6 +15,9 @@ namespace CMTC.Core.SymTable
         bool VariableIsInScopeNested(string id);
 
         Symbol GetSymbol(string name);
+        Symbol GetSymbolGlobal(string name);
+        Symbol GetSymbolLocal(string name);
+
         IScope GetMethod(string name);
         IScope GetChild(int index);
         IScope AddChild(IScope child);

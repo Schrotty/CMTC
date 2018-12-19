@@ -17,6 +17,11 @@ statement(statement) ::= <<
 	<statement>
 >>
 
+expression(expr) ::= <<
+	<expr>
+
+>>
+
 block(statement) ::=
 <<
 {
@@ -27,17 +32,21 @@ block(statement) ::=
 
 varDecl(id, type) ::= 
 <<
-	%<id> = alloca <typeMap.(type)> <typeDefaultValues.(type)>
+	%<id> = alloca <typeMap.(type)>
 
 >>
 
 globalVarDecl(id, type) ::= <<
-	@<id> common global <typeMap.(type)> <typeDefaultValues.(type)>
+	@<id> = common global <typeMap.(type)> <typeDefaultValues.(type)>
 
 >>
 
-returnStatement(type, expression, result) ::= <<
-	<expression>
+assignStat() ::= <<
+	
+>>
+
+returnStatement(type, result, expr) ::= <<
+	<expr>
 
 	ret <typeMap.(type)> %<result>
 >>
@@ -50,10 +59,8 @@ methodCallExpr(index, id, type, args) ::= <<
 args(parameter) ::= "<trunc(parameter):arg()><typeMap.(last(parameter))>"
 arg(type) ::= "<typeMap.(type)>, "
 
-addSubExpr(index, type, op, op1, op2, expression) ::= <<
-	<expression>
-
-	%<index> = <opMap.(op)> <typeMap.(type)> <op1>, <op2>
+addSubExpr(index, type, op, op1, op2) ::= <<
+	%<index> = <opMap.(op)> <typeMap.(type)> %<op1>, %<op2>
 
 >>
 
@@ -62,8 +69,8 @@ storeValue(type, source, target) ::= <<
 
 >>
 
-loadValue(target, type, source) ::= <<
-	%<target> = load <typeMap.(type)>, <typeMap.(type)>* <source>
+loadValue(target, type, source, globalSource) ::= <<
+	%<target> = load <typeMap.(type)>, <typeMap.(type)>* <if(globalSource)>@<else>%<endif><source>
 
 >>
 
@@ -75,7 +82,8 @@ opMap ::= [
 ]
 
 typeMap ::= [
-	"int":"i32"
+	"int":"i32",
+	"void":"void"
 ]
 
 typeDefaultValues ::= [

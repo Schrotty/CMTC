@@ -1,21 +1,12 @@
 ﻿int u;
-
-int f(int x, int y)
+int f()
 {
+	int i;
+	i = 5;
+	u = 5;
 	{
-		int i;
-		i = 42;
+		u = 10;
 	}
 
-	return x + y;
-}
-
-int g(int z)
-{
-	return z;
-}
-
-int main() 
-{
-	return f(5, 5);
+	return u - 8;
 }

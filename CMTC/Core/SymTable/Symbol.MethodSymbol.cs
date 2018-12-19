@@ -57,7 +57,21 @@ namespace CMTC.Core.SymTable
                 Symbol symbol;
                 _symbols.TryGetValue(name, out symbol);
 
+                if (symbol == null)
+                {
+                    symbol = Child.GetSymbol(name);
+                    if (symbol != null)
+                    {
+                        return symbol;
+                    }
+                }
+
                 return symbol;
+            }
+
+            public Symbol GetSymbolGlobal(string name)
+            {
+                return _enclosing.GetSymbol(name);
             }
 
             public SymbolType Resolve(string name)
@@ -79,7 +93,7 @@ namespace CMTC.Core.SymTable
             public IScope AddChild(IScope child)
             {
                 Child = child;
-                return child;
+                return Child;
             }
 
             public IScope GetMethod(string name)
@@ -90,6 +104,13 @@ namespace CMTC.Core.SymTable
             public void SetNextIndex(int index)
             {
                 Position = index;
+            }
+
+            public Symbol GetSymbolLocal(string name)
+            {
+                _symbols.TryGetValue(name, out var val);
+
+                return val;
             }
         }
     }

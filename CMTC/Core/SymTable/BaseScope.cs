@@ -72,7 +72,7 @@ namespace CMTC.Core.SymTable
         public Symbol GetSymbol(string name)
         {
             Symbol symbol;
-            _symbols.TryGetValue(name, out symbol);
+            var b = _symbols.TryGetValue(name, out symbol);
 
             if (symbol == null)
             {
@@ -84,9 +84,33 @@ namespace CMTC.Core.SymTable
                         return symbol;
                     }
                 }
+
+                return GetSymbolGlobal(name);
             }
 
-            return symbol;
+            return b ? symbol : null;
+        }
+
+        public Symbol GetSymbolGlobal(string name)
+        {
+            var tmp = GetScopeName().Equals("global") ? this : _enclosing;
+            while (!tmp.GetScopeName().Equals("global"))
+            {
+                tmp = tmp.GetEnclosingScope();
+                if (tmp.GetScopeName().Equals("global"))
+                {
+                    return tmp.GetSymbol(name);
+                }
+            }
+            
+            return null;
+        }
+
+        public Symbol GetSymbolLocal(string name)
+        {
+            _symbols.TryGetValue(name, out var val);
+
+            return val;
         }
 
         public IScope GetChild(int index)
