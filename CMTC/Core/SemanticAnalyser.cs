@@ -43,8 +43,11 @@ namespace CMTC.Core
                 id = _symbolTable.Position++;
             }
 
-            _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), id,
-                _symbolTable.Global.Resolve(context.type().Start.Text)));
+            var symbol = new Symbol(context.ID().ToString(), id,
+                _symbolTable.Global.Resolve(context.type().Start.Text));
+
+            symbol.GlobalSymbol = _symbolTable.IsGlobal;
+            _symbolTable.Scopes.Peek().Define(symbol);
 
             return _symbolTable.Scopes.Peek();
         }

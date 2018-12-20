@@ -1,11 +1,26 @@
-file(functionDecls, variableDecls) ::=
-<<
-	<variableDecls>
-	<functionDecls>
+file(functionDecls, variableDecls) ::= <<
+<variableDecls>
+<functionDecls>
 >>
 
-functionDecl(returnType, identifier, parameter, block) ::=
-<<
+// variable templates
+symbol(symbol) ::= <<
+<if(symbol.GlobalSymbol)>@<symbol.Name><else>%<symbol.Position><endif>
+>>
+
+symbolDeclaration(symbol) ::= <<
+<if(symbol.GlobalSymbol)><globalSymbolDeclaration(symbol)><else><localSymbolDeclaration(symbol)><endif>
+>>
+
+globalSymbolDeclaration(symbol) ::= <<
+<symbol(symbol)> = common global <typeMap.(symbol.Type)> <typeDefaultValues.(symbol.Type)>
+>>
+
+localSymbolDeclaration(symbol) ::= <<
+<symbol(symbol)> = alloca <typeMap.(symbol.Type)>
+>>
+
+functionDecl(returnType, identifier, parameter, block) ::= <<
 	define <typeMap.(returnType)> @<identifier>(<parameter>)
 	<block>
 >>
@@ -22,22 +37,10 @@ expression(expr) ::= <<
 
 >>
 
-block(statement) ::=
-<<
+block(statement) ::= <<
 {
 	<statement>
 }
-
->>
-
-varDecl(id, type) ::= 
-<<
-	%<id> = alloca <typeMap.(type)>
-
->>
-
-globalVarDecl(id, type) ::= <<
-	@<id> = common global <typeMap.(type)> <typeDefaultValues.(type)>
 
 >>
 
@@ -82,10 +85,10 @@ opMap ::= [
 ]
 
 typeMap ::= [
-	"int":"i32",
-	"void":"void"
+	"INT":"i32",
+	"VOID":"void"
 ]
 
 typeDefaultValues ::= [
-	"int":"0"
+	"INT":"0"
 ]

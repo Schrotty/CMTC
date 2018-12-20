@@ -3,6 +3,7 @@ using Antlr4.StringTemplate;
 using CMTC.Core.SymTable;
 using CMTC.Utilities;
 using System.Collections.Generic;
+using static CMTC.Core.SymTable.Symbol;
 
 namespace CMTC.Core
 {
@@ -79,13 +80,13 @@ namespace CMTC.Core
             _templates.Push(TemplateManager.GetTemplate("file"));
             foreach (var c in context.varDecl())
             {
-                _templates.Peek().Add("variableDecls", Visit(c));
+                _templates.Peek().Add("variableDecls", VisitVarDecl(c));
             }
 
             _global = false;
             foreach (var c in context.functionDecl())
             {              
-                _templates.Peek().Add("functionDecls", Visit(c));                
+                _templates.Peek().Add("functionDecls", VisitFunctionDecl(c));                
             }
 
             return _templates.Pop();
@@ -101,19 +102,10 @@ namespace CMTC.Core
         /// <returns></returns>
         public override Template VisitVarDecl([NotNull] CymbolParser.VarDeclContext context)
         {
-            var id = 0;
-            if (!_global)
-            {
-                id = ++global.GetMethod(_localScopeName).GetChild(0).GetSymbol(context.ID().GetText()).Position;
-            }
-            
-            return !_global 
-                ? TemplateManager.GetTemplate("varDecl")
-                    .Add("id", id)
-                    .Add("type", context.type().GetText()) 
-                : TemplateManager.GetTemplate("globalVarDecl")
-                    .Add("type", context.type().GetText())
-                    .Add("id", context.ID().GetText());
+            var symbol = global.GetMethod(_localScopeName).GetSymbol(context.ID().GetText());
+            if (!_global) symbol.Position++;
+
+            return TemplateManager.SymbolDeclaration(symbol);
         }
 
         /// <summary>

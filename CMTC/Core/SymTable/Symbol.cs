@@ -11,14 +11,16 @@
             INT
         }
 
-        internal string Name { get; private set; }
-        internal SymbolType Type { get; private set; }
-        internal int Position { get; set; }
+        public string Name { get; private set; }
+        public SymbolType Type { get; private set; }
+        public int Position { get; set; }
+        public bool GlobalSymbol { get; set; }
 
         public Symbol(string name, int pos)
         {
             Name = name;
             Position = pos;
+            GlobalSymbol = false;
         }
 
         public Symbol(string name, int pos, SymbolType type) : this(name, pos)

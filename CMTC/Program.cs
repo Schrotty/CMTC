@@ -1,5 +1,5 @@
 ﻿using CMTC.Core;
-using System.IO;
+using CMTC.Utilities;
 
 namespace CMTC
 {
@@ -7,7 +7,8 @@ namespace CMTC
     {
         static void Main(string[] args)
         {
-            CMTCompiler.Execute(File.ReadAllText(args[0]));
+            ApplicationSettings.AppySettings(args);
+            CMTCompiler.Execute(FileUtilities.ReadFile(args[args.Length - 1]));
         }
     }
 }

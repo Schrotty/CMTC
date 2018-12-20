@@ -127,6 +127,7 @@ namespace CMTC.Core.SymTable
 
         public IScope GetMethod(string name)
         {
+            if (name == null) return this;
             return Children.Find(c => c.GetScopeName().Equals(name));
         }
 

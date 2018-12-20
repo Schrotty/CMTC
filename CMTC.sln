@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTC", "CMTC\CMTC.csproj", "{9624DD2C-A63A-4999-A13D-D199167E13C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMTC", "CMTC\CMTC.csproj", "{9624DD2C-A63A-4999-A13D-D199167E13C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTC-Test", "CMTC-Test\CMTC-Test.csproj", "{FC59C66B-B2FA-4CFA-AA1D-2B04D7B50977}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9624DD2C-A63A-4999-A13D-D199167E13C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9624DD2C-A63A-4999-A13D-D199167E13C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9624DD2C-A63A-4999-A13D-D199167E13C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC59C66B-B2FA-4CFA-AA1D-2B04D7B50977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC59C66B-B2FA-4CFA-AA1D-2B04D7B50977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC59C66B-B2FA-4CFA-AA1D-2B04D7B50977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC59C66B-B2FA-4CFA-AA1D-2B04D7B50977}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

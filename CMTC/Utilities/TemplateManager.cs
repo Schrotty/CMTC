@@ -1,10 +1,11 @@
 ﻿using Antlr4.StringTemplate;
+using CMTC.Core.SymTable;
 using System.IO;
 using System.Reflection;
 
 namespace CMTC.Utilities
 {
-    class TemplateManager
+    public class TemplateManager
     {
         private TemplateGroup _templates;
 
@@ -31,5 +32,7 @@ namespace CMTC.Utilities
 
             _templates = new TemplateGroupString(content);
         }
+
+        public static Template SymbolDeclaration(Symbol symbol) => GetTemplate("symbolDeclaration").Add("symbol", symbol);
     }
 }
