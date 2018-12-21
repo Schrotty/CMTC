@@ -1,6 +1,5 @@
-file(functionDecls, variableDecls) ::= <<
-<variableDecls>
-<functionDecls>
+file(symbols) ::= <<
+<symbols>
 >>
 
 // variable templates
@@ -9,7 +8,8 @@ symbol(symbol) ::= <<
 >>
 
 symbolDeclaration(symbol) ::= <<
-<if(symbol.GlobalSymbol)><globalSymbolDeclaration(symbol)><else><localSymbolDeclaration(symbol)><endif>
+<if(symbol.GlobalSymbol)><globalSymbolDeclaration(symbol)>
+<else><localSymbolDeclaration(symbol)><endif>
 >>
 
 globalSymbolDeclaration(symbol) ::= <<
@@ -20,43 +20,37 @@ localSymbolDeclaration(symbol) ::= <<
 <symbol(symbol)> = alloca <typeMap.(symbol.Type)>
 >>
 
-functionDecl(returnType, identifier, parameter, block) ::= <<
-	define <typeMap.(returnType)> @<identifier>(<parameter>)
+// function templates
+function(function, block) ::= <<
+define <typeMap.(function.Type)> @<function.Name>(<parameterList(function.Parameter)>)
+{
 	<block>
+}
 >>
 
-formalParameters(parameter) ::= "<trunc(parameter):formalParameterItem()><typeMap.(last(parameter))>"
-formalParameterItem(type) ::= "<typeMap.(type)>, "
+parameterList(parameter) ::= <<
+<trunc(parameter):parameter()><typeMap.(last(parameter))>
+>>
 
+parameter(parameter) ::= <<
+<typeMap.(parameter)>, 
+>>
+
+// statement & expression templates
 statement(statement) ::= <<
-	<statement>
+<statement>
 >>
 
 expression(expr) ::= <<
-	<expr>
-
+<expr>
 >>
 
-block(statement) ::= <<
-{
-	<statement>
-}
-
+returnStatement(symbol) ::= <<
+ret <typeMap.(symbol.Type)> <symbol(symbol)>
 >>
 
-assignStat() ::= <<
-	
->>
-
-returnStatement(type, result, expr) ::= <<
-	<expr>
-
-	ret <typeMap.(type)> %<result>
->>
-
-methodCallExpr(index, id, type, args) ::= <<
-	%<index> = call <typeMap.(type)> @<id>(<args>)
-
+methodCallExpr(symbol, method) ::= <<
+<symbol(symbol)> = call <typeMap.(method.Type)> @<method.Name>(<method.Parameter>)
 >>
 
 args(parameter) ::= "<trunc(parameter):arg()><typeMap.(last(parameter))>"

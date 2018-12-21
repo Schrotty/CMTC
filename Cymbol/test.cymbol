@@ -1,12 +1,9 @@
 ﻿int u;
-int f()
-{
-	int i;
-	i = 5;
-	u = 5;
-	{
-		u = 10;
-	}
 
-	return u - 8;
+int main(int i, int l)
+{
+	int integer;
+	integer = 42;
+
+	return integer;
 }

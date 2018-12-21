@@ -1,10 +1,33 @@
-﻿using Antlr4.Runtime;
+﻿// ***********************************************************************
+// Assembly         : CMTC
+// Author           : ruben
+// Created          : 12-20-2018
+//
+// Last Modified By : ruben
+// Last Modified On : 12-20-2018
+// ***********************************************************************
+// <copyright file="CMTCompiler.cs" company="CMTC">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using Antlr4.Runtime;
 using System;
 
+/// <summary>
+/// The Core namespace.
+/// </summary>
 namespace CMTC.Core
 {
+    /// <summary>
+    /// Class CMTCompiler.
+    /// </summary>
     class CMTCompiler
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CMTCompiler" /> class.
+        /// </summary>
+        /// <param name="source">The source.</param>
         private CMTCompiler(string source)
         {
             var input = CharStreams.fromstring(source);
@@ -24,6 +47,10 @@ namespace CMTC.Core
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Executes the specified source.
+        /// </summary>
+        /// <param name="source">The source.</param>
         public static void Execute(string source)
         {
             new CMTCompiler(source);

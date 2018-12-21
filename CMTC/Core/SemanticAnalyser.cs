@@ -1,4 +1,17 @@
-﻿using Antlr4.Runtime.Misc;
+﻿// ***********************************************************************
+// Assembly         : CMTC
+// Author           : ruben
+// Created          : 12-20-2018
+//
+// Last Modified By : ruben
+// Last Modified On : 12-20-2018
+// ***********************************************************************
+// <copyright file="SemanticAnalyser.cs" company="CMTC">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using CMTC.Core.Extensions;
 using CMTC.Core.SymTable;
@@ -6,12 +19,33 @@ using CMTC.Utilities;
 using static CMTC.Core.SymTable.BaseScope;
 using static CMTC.Core.SymTable.Symbol;
 
+/// <summary>
+/// The Core namespace.
+/// </summary>
 namespace CMTC.Core
 {
+    /// <summary>
+    /// Class SemanticAnalyser.
+    /// Implements the <see cref="CymbolBaseVisitor{CMTC.Core.SymTable.IScope}" />
+    /// </summary>
+    /// <seealso cref="CymbolBaseVisitor{CMTC.Core.SymTable.IScope}" />
     class SemanticAnalyser : CymbolBaseVisitor<IScope>
     {
+        /// <summary>
+        /// The symbol table
+        /// </summary>
         private SymbolTable _symbolTable = new SymbolTable();
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitFile([NotNull] CymbolParser.FileContext context)
         {
             _symbolTable.Scopes.Push(_symbolTable.Global);
@@ -30,6 +64,17 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Pop();
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <exception cref="System.Exception">Nope</exception>
+        /// <return>The visitor result.</return>
         public override IScope VisitVarDecl([NotNull] CymbolParser.VarDeclContext context)
         {
             if (_symbolTable.Scopes.Peek().VariableIsInScope(context.ID().GetText()))
@@ -52,6 +97,18 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek();
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <exception cref="System.Exception">
+        /// </exception>
+        /// <return>The visitor result.</return>
         public override IScope VisitFunctionDecl([NotNull] CymbolParser.FunctionDeclContext context)
         {
             if (!_symbolTable.Global.VariableIsInScope(context.ID().GetText()))
@@ -87,6 +144,16 @@ namespace CMTC.Core
             throw new System.Exception("");
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.block" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitBlock([NotNull] CymbolParser.BlockContext context)
         {
             LocalScope local = new LocalScope(_symbolTable.Scopes.Peek());
@@ -106,6 +173,15 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek().AddChild(scope);
         }
 
+        /// <summary>
+        /// <inheritDoc />
+        /// <p>The default implementation returns the result of
+        /// <see cref="P:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.DefaultResult">defaultResult</see>
+        /// .</p>
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <returns>IScope.</returns>
+        /// <exception cref="System.Exception"></exception>
         public override IScope VisitTerminal(ITerminalNode node)
         {
             if (node.Symbol.Type == CymbolLexer.ID)
@@ -123,6 +199,16 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek();
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitIfStat([NotNull] CymbolParser.IfStatContext context)
         {
             Visit(context.expr());
@@ -134,6 +220,16 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek();
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitForStat([NotNull] CymbolParser.ForStatContext context)
         {
             foreach (var c in context.assignStat())
@@ -147,6 +243,16 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek();
         }
 
+        /// <summary>
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+        /// <para>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+        /// on <paramref name="context" />.
+        /// </para>
+        /// </summary>
+        /// <param name="context">The parse tree.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitReturnStat([NotNull] CymbolParser.ReturnStatContext context)
         {
             Visit(context.expr());
@@ -154,6 +260,12 @@ namespace CMTC.Core
             return _symbolTable.Scopes.Peek();
         }
 
+        /// <summary>
+        /// Visits the print stat.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>IScope.</returns>
+        /// <return>The visitor result.</return>
         public override IScope VisitPrintStat([NotNull] CymbolParser.PrintStatContext context)
         {
             Visit(context.expr());

@@ -1,14 +1,30 @@
-﻿using Antlr4.Runtime.Misc;
+﻿// ***********************************************************************
+// Assembly         : CMTC
+// Author           : ruben
+// Created          : 12-20-2018
+//
+// Last Modified By : ruben
+// Last Modified On : 12-20-2018
+// ***********************************************************************
+// <copyright file="CodeGenerator.cs" company="CMTC">
+//     Copyright (c) . All rights reserved.
+// </copyright>
+// <summary></summary>
+// ***********************************************************************
+using Antlr4.Runtime.Misc;
 using Antlr4.StringTemplate;
 using CMTC.Core.SymTable;
 using CMTC.Utilities;
 using System.Collections.Generic;
 using static CMTC.Core.SymTable.Symbol;
 
+/// <summary>
+/// The Core namespace.
+/// </summary>
 namespace CMTC.Core
 {
     /// <summary>
-    /// 
+    /// Class CodeGenerator.
     /// </summary>
     /// <seealso cref="CymbolBaseVisitor{Antlr4.StringTemplate.Template}" />
     class CodeGenerator : CymbolBaseVisitor<Template>
@@ -59,7 +75,7 @@ namespace CMTC.Core
         private string _parent = string.Empty;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CodeGenerator"/> class.
+        /// Initializes a new instance of the <see cref="CodeGenerator" /> class.
         /// </summary>
         /// <param name="global">The global.</param>
         public CodeGenerator(IScope global)
@@ -68,38 +84,42 @@ namespace CMTC.Core
         }
 
         /// <summary>
-        /// Visit a parse tree produced by <see cref="M:CymbolParser.file"/>.
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
         /// <para>
-        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)"/>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
         /// on <paramref name="context" />.
-        /// </para></summary>
+        /// </para>
+        /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
+        /// <return>The visitor result.</return>
         public override Template VisitFile([NotNull] CymbolParser.FileContext context)
         {
             _templates.Push(TemplateManager.GetTemplate("file"));
             foreach (var c in context.varDecl())
             {
-                _templates.Peek().Add("variableDecls", VisitVarDecl(c));
+                _templates.Peek().Add("symbols", VisitVarDecl(c));
             }
 
             _global = false;
             foreach (var c in context.functionDecl())
             {              
-                _templates.Peek().Add("functionDecls", VisitFunctionDecl(c));                
+                _templates.Peek().Add("symbols", VisitFunctionDecl(c));                
             }
 
             return _templates.Pop();
         }
 
         /// <summary>
-        /// Visit a parse tree produced by <see cref="M:CymbolParser.varDecl"/>.
+        /// Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
         /// <para>
-        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)"/>
+        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
         /// on <paramref name="context" />.
-        /// </para></summary>
+        /// </para>
+        /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
+        /// <return>The visitor result.</return>
         public override Template VisitVarDecl([NotNull] CymbolParser.VarDeclContext context)
         {
             var symbol = global.GetMethod(_localScopeName).GetSymbol(context.ID().GetText());
@@ -116,53 +136,15 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitFunctionDecl([NotNull] CymbolParser.FunctionDeclContext context)
         {
-            _localScopeName = context.ID().GetText();
-            _currentScope = global.GetMethod(context.ID().GetText());
+            _templates.Push(
+                TemplateManager.FunctionDeclaration((MethodSymbol)global.GetMethod(context.ID().GetText()))
+            );
 
-            Template function = TemplateManager.GetTemplate("functionDecl");
-            function.Add("returnType", context.type().GetText());
-            function.Add("identifier", context.ID().GetText());
-            function.Add("block", VisitBlock(context.block()));
-
-            _templates.Push(function);
-            if (context.formalParameters() != null)
-            {
-                _templates.Peek().Add("parameter", Visit(context.formalParameters()));
-            }
-
-            Visit(context.block());
-
-            _localScopeVarIndex = 0;
-            return _templates.Pop();
-        }
-
-        /// <summary>
-        /// Visit a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
-        /// <para>
-        /// The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
-        /// on <paramref name="context" />.
-        /// </para>
-        /// </summary>
-        /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
-        /// <return>The visitor result.</return>
-        public override Template VisitFormalParameters([NotNull] CymbolParser.FormalParametersContext context)
-        {
-            _templates.Push(TemplateManager.GetTemplate("formalParameters"));
-
-            List<string> parameter = new List<string>();
-            foreach (var c in context.formalParameter())
-            {
-                _localScopeVarIndex++;
-                parameter.Add(c.type().GetText());
-            }
-
-            _templates.Peek().Add("parameter", parameter);
-            return _templates.Pop();
+            return _templates.Pop().Add("block", VisitBlock(context.block()));
         }
 
         /// <summary>
@@ -173,34 +155,20 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitBlock([NotNull] CymbolParser.BlockContext context)
         {
-            if (!_parent.Equals("subBlock"))
-            {
-                _templates.Push(TemplateManager.GetTemplate("block"));
-                if (context.stat() != null)
-                {
-                    foreach (var c in context.stat())
-                    {
-                        Visit(c);
-                    }
-                }
-
-                return _templates.Pop();
-            }
-
             _templates.Push(TemplateManager.GetTemplate("statement"));
             if (context.stat() != null)
             {
                 foreach (var c in context.stat())
                 {
-                    Visit(c);
+                    VisitStat(c);
                 }
             }
 
-            _parent = string.Empty;
+            _localScopeVarIndex = 0;
             return _templates.Pop();
         }
 
@@ -212,34 +180,33 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitStat([NotNull] CymbolParser.StatContext context)
         {
             if (context.expr() != null)
             {
-                _templates.Peek().Add("statement", Visit(context.expr()));
+                _templates.Peek().Add("statement", VisitExpr(context.expr()));
             }
 
             if (context.returnStat() != null)
             {
-                _templates.Peek().Add("statement", Visit(context.returnStat()));
+                //_templates.Peek().Add("statement", VisitReturnStat(context.returnStat()));
             }
 
             if (context.varDecl() != null)
             {
-                _templates.Peek().Add("statement", Visit(context.varDecl()));
+                _templates.Peek().Add("statement", VisitVarDecl(context.varDecl()));
             }
 
             if (context.assignStat() != null)
             {
-                _templates.Peek().Add("statement", Visit(context.assignStat()));
+                _templates.Peek().Add("statement", VisitAssignStat(context.assignStat()));
             }
 
             if (context.block() != null)
             {
-                _parent = "subBlock";
-                _templates.Peek().Add("statement", Visit(context.block()));
+                _templates.Peek().Add("statement", VisitBlock(context.block()));
             }
 
             return _templates.Peek();
@@ -255,7 +222,7 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitReturnStat([NotNull] CymbolParser.ReturnStatContext context)
         {
@@ -274,7 +241,7 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitAssignStat([NotNull] CymbolParser.AssignStatContext context)
         {
@@ -310,7 +277,7 @@ namespace CMTC.Core
         /// </para>
         /// </summary>
         /// <param name="context">The parse tree.</param>
-        /// <returns></returns>
+        /// <returns>Template.</returns>
         /// <return>The visitor result.</return>
         public override Template VisitExpr([NotNull] CymbolParser.ExprContext context)
         {
@@ -334,7 +301,7 @@ namespace CMTC.Core
                     if (!valExists && _parent != "assign")
                     {
                         _templates.Peek().Add("expr",
-                            TemplateManager.GetTemplate("varDecl")
+                            TemplateManager.GetTemplate("symbol")
                                 .Add("type", "int")
                                 .Add("id", ++((Symbol)_currentScope).Position));
                     }

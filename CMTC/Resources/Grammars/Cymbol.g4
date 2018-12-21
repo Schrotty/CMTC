@@ -1,7 +1,8 @@
 grammar Cymbol;
 import Clexer;
 
-file:   (functionDecl | varDecl)+ ; 
+file:   (functionDecl | varDecl)+
+	; 
 
 functionDecl
 	:   type ID '(' formalParameters? ')' block
@@ -25,23 +26,39 @@ stat:   block
 	|   expr ';'     
 	;
 	 
-block:  '{' stat* '}' ;   
+block
+	:  '{' stat* '}'
+	;   
 
-assignStat:  ID '=' expr ;
+assignStat
+	:  ID '=' expr
+	;
 
-ifStat: 'if' '(' expr ')' stat ('else' stat)? ;
+ifStat
+	: 'if' '(' expr ')' stat ('else' stat)?
+	;
 
-forStat: 'for' '(' assignStat ';' expr ';' assignStat ')' block ;
+forStat
+	: 'for' '(' assignStat ';' expr ';' assignStat ')' block
+	;
 
-returnStat: 'return' expr ;
+returnStat
+	: 'return' expr
+	;
 
-args : expr (',' expr)* ;  
+args: expr (',' expr)*
+	;  
 
-printStat: 'printf' '(' expr ')';
+printStat
+	: 'printf' '(' expr ')'
+	;
 
-varDecl:   type ID ';' ;
+varDecl
+	:   type ID ';'
+	;
 
-type: 'int'; 
+type: 'int'
+	; 
 
 expr:   '-' expr					
 	|   '!' expr						
@@ -53,10 +70,4 @@ expr:   '-' expr
 	|   INT								
 	|   '(' expr ')'					
 	|   ID '(' args? ')'				
-	;
-
-id	: ID
-	;
-
-int	: INT
 	;
