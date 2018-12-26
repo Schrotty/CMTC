@@ -37,7 +37,7 @@ namespace CMTC.Core
             var parser = new CymbolParser(tokens);
 
             var tree = parser.file();
-            var visitor = new SemanticAnalyser();
+            var visitor = new SemanticAnalyzer();
             var scope = visitor.Visit(tree);
 
             var generator = new CodeGenerator(scope);

@@ -6,7 +6,7 @@
 // Last Modified By : ruben
 // Last Modified On : 12-20-2018
 // ***********************************************************************
-// <copyright file="SemanticAnalyser.cs" company="CMTC">
+// <copyright file="SemanticAnalyzer.cs" company="CMTC">
 //     Copyright (c) . All rights reserved.
 // </copyright>
 // <summary></summary>
@@ -25,16 +25,18 @@ using static CMTC.Core.SymTable.Symbol;
 namespace CMTC.Core
 {
     /// <summary>
-    /// Class SemanticAnalyser.
+    /// Class SemanticAnalyzer.
     /// Implements the <see cref="CymbolBaseVisitor{CMTC.Core.SymTable.IScope}" />
     /// </summary>
     /// <seealso cref="CymbolBaseVisitor{CMTC.Core.SymTable.IScope}" />
-    class SemanticAnalyser : CymbolBaseVisitor<IScope>
+    class SemanticAnalyzer : CymbolBaseVisitor<IScope>
     {
         /// <summary>
         /// The symbol table
         /// </summary>
         private SymbolTable _symbolTable = new SymbolTable();
+
+        private bool _globalContext = true;
 
         /// <summary>
         /// Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
@@ -49,13 +51,12 @@ namespace CMTC.Core
         public override IScope VisitFile([NotNull] CymbolParser.FileContext context)
         {
             _symbolTable.Scopes.Push(_symbolTable.Global);
-
             foreach (var c in context.varDecl())
             {
                 Visit(c);
             }
 
-            _symbolTable.IsGlobal = false;
+            _globalContext = false;
             foreach (var c in context.functionDecl())
             {
                 _symbolTable.Scopes.Peek().AddChild(Visit(c));
@@ -77,24 +78,17 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override IScope VisitVarDecl([NotNull] CymbolParser.VarDeclContext context)
         {
-            if (_symbolTable.Scopes.Peek().VariableIsInScope(context.ID().GetText()))
+            if (!_symbolTable.Scopes.Peek().VariableIsInScope(context.ID().GetText()))
             {
-                throw new System.Exception("Nope");
+                _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), -1, _symbolTable.Global.Resolve(context.type().Start.Text))
+                {
+                    GlobalSymbol = _globalContext
+                });
+
+                return _symbolTable.Scopes.Peek();
             }
 
-            var id = 0;
-            if (!_symbolTable.IsGlobal)
-            {
-                id = _symbolTable.Position++;
-            }
-
-            var symbol = new Symbol(context.ID().ToString(), id,
-                _symbolTable.Global.Resolve(context.type().Start.Text));
-
-            symbol.GlobalSymbol = _symbolTable.IsGlobal;
-            _symbolTable.Scopes.Peek().Define(symbol);
-
-            return _symbolTable.Scopes.Peek();
+            throw new System.Exception(TemplateManager.GetTemplate("EXISTS_ALREADY").Render());
         }
 
         /// <summary>
@@ -121,27 +115,24 @@ namespace CMTC.Core
                     _symbolTable.Global.Define(method);
                     if (context.formalParameters() != null)
                     {
+                        var index = 1;
                         foreach (var c in context.formalParameters().formalParameter())
                         {
-                            method.Define(new Symbol(c.ID().ToString(), _symbolTable.Position,
+                            method.Define(new Symbol(c.ID().ToString(), index++,
                                 _symbolTable.Global.Resolve(c.type().Start.Text)));
-
-                            _symbolTable.Position++;
                         }
                     }
 
                     _symbolTable.Scopes.Push(method);
                     _symbolTable.Scopes.Peek().AddChild(Visit(context.block()));
 
-                    _symbolTable.Scopes.Peek().SetNextIndex(_symbolTable.Position);
-                    _symbolTable.Position = 0;
                     return _symbolTable.Scopes.Pop();
                 }
 
-                throw new System.Exception("");
+                throw new System.Exception("NO_VALID_RETURN");
             }
 
-            throw new System.Exception("");
+            throw new System.Exception("NO_SUCH_FUNC");
         }
 
         /// <summary>
@@ -156,7 +147,7 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override IScope VisitBlock([NotNull] CymbolParser.BlockContext context)
         {
-            LocalScope local = new LocalScope(_symbolTable.Scopes.Peek());
+            var local = new LocalScope(_symbolTable.Scopes.Peek());
 
             _symbolTable.Scopes.Peek().AddChild(local);
             _symbolTable.Scopes.Push(local);

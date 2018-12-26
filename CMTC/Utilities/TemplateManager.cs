@@ -88,5 +88,7 @@ namespace CMTC.Utilities
         /// <param name="source">The source.</param>
         /// <returns>Template.</returns>
         public static Template AssignStatement(Symbol target, Symbol source) => GetTemplate("assignStat").Add("target", target).Add("source", source);
+
+        public static Template StoreStatement(Symbol target, string value) => GetTemplate("storeStat").Add("target", target).Add("source", value);
     }
 }

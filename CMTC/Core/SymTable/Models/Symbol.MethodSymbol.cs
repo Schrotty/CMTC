@@ -241,6 +241,28 @@ namespace CMTC.Core.SymTable
 
                 return val;
             }
+
+            public int IncreasedIndex()
+            {
+                return GetIndex() + 1;
+            }
+
+            public int GetIndex()
+            {
+                var pos = 0;
+                var chi = Child.GetIndex();
+                if (_symbols.LastOrDefault().Value != null)
+                {
+                    pos = _symbols.Last().Value.Position;
+                }
+                
+                return pos > chi ? pos : chi;
+            }
+
+            public Symbol GetSymbol(int identifier)
+            {
+                return Child.GetSymbol(identifier);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@
 // <summary></summary>
 // ***********************************************************************
 using System.Collections.Generic;
+using System.Linq;
 using static CMTC.Core.SymTable.Symbol;
 
 /// <summary>
@@ -30,10 +31,13 @@ namespace CMTC.Core.SymTable
         /// The symbols
         /// </summary>
         private Dictionary<string, Symbol> _symbols = new Dictionary<string, Symbol>();
+
         /// <summary>
         /// The enclosing
         /// </summary>
         private IScope _enclosing;
+
+        private int _localMaxIndex = 1;
 
         /// <summary>
         /// Gets the children.
@@ -46,6 +50,7 @@ namespace CMTC.Core.SymTable
         /// </summary>
         /// <returns>System.String.</returns>
         public abstract string GetScopeName();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseScope" /> class.
         /// </summary>
@@ -62,7 +67,13 @@ namespace CMTC.Core.SymTable
         /// <param name="symbol">The symbol.</param>
         public void Define(Symbol symbol)
         {
+            if (_symbols.TryGetValue(symbol.Name, out var o))
+            {
+                _symbols.Remove(symbol.Name);
+            }
+
             _symbols.Add(symbol.Name, symbol);
+            _localMaxIndex = symbol.Position;
         }
 
         /// <summary>
@@ -235,12 +246,33 @@ namespace CMTC.Core.SymTable
         }
 
         /// <summary>
-        /// Sets the index of the next.
+        /// Increases the index.
         /// </summary>
-        /// <param name="index">The index.</param>
-        public void SetNextIndex(int index)
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public int IncreasedIndex()
         {
-            //nothing
+            return GetIndex() + 1;
+        }
+
+        /// <summary>
+        /// Gets the index.
+        /// </summary>
+        /// <returns>System.Int32.</returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public int GetIndex()
+        {
+            var pos = _symbols.Max(pair =>
+            {
+                return pair.Value.Position;
+            });
+
+            return pos > _localMaxIndex ? pos : _localMaxIndex;
+        }
+
+        public Symbol GetSymbol(int identifier)
+        {
+            return _symbols.Where(pair => pair.Value.Position == identifier).First().Value;
         }
     }
 }

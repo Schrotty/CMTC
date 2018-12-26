@@ -13,7 +13,9 @@
 // ***********************************************************************
 using Antlr4.Runtime.Misc;
 using Antlr4.StringTemplate;
+using CMTC.Core.Extensions;
 using CMTC.Core.SymTable;
+using CMTC.Core.SymTable.Models;
 using CMTC.Utilities;
 using System.Collections.Generic;
 using static CMTC.Core.SymTable.Symbol;
@@ -30,21 +32,6 @@ namespace CMTC.Core
     class CodeGenerator : CymbolBaseVisitor<Template>
     {
         /// <summary>
-        /// The global
-        /// </summary>
-        private bool _global = true;
-
-        /// <summary>
-        /// The local scope name
-        /// </summary>
-        private string _localScopeName;
-
-        /// <summary>
-        /// The local scope variable index
-        /// </summary>
-        private int _localScopeVarIndex;
-
-        /// <summary>
         /// The templates
         /// </summary>
         private readonly Stack<Template> _templates = new Stack<Template>();
@@ -52,17 +39,12 @@ namespace CMTC.Core
         /// <summary>
         /// The expression results
         /// </summary>
-        private readonly Stack<int> _expressionResults = new Stack<int>();
-
-        /// <summary>
-        /// The saved values
-        /// </summary>
-        private readonly Dictionary<int, Symbol> _symbols = new Dictionary<int, Symbol>();
+        private readonly Stack<Expression> _expressionResults = new Stack<Expression>();
 
         /// <summary>
         /// The global
         /// </summary>
-        private readonly IScope global;
+        private readonly IScope _globalScope;
 
         /// <summary>
         /// The current scope
@@ -70,17 +52,13 @@ namespace CMTC.Core
         private IScope _currentScope;
 
         /// <summary>
-        /// The parent
-        /// </summary>
-        private string _parent = string.Empty;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CodeGenerator" /> class.
         /// </summary>
         /// <param name="global">The global.</param>
         public CodeGenerator(IScope global)
         {
-            this.global = global;
+            _globalScope = global;
+            _currentScope = global;
         }
 
         /// <summary>
@@ -101,7 +79,6 @@ namespace CMTC.Core
                 _templates.Peek().Add("symbols", VisitVarDecl(c));
             }
 
-            _global = false;
             foreach (var c in context.functionDecl())
             {              
                 _templates.Peek().Add("symbols", VisitFunctionDecl(c));                
@@ -122,10 +99,9 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override Template VisitVarDecl([NotNull] CymbolParser.VarDeclContext context)
         {
-            var symbol = global.GetMethod(_localScopeName).GetSymbol(context.ID().GetText());
-            if (!_global) symbol.Position++;
-
-            return TemplateManager.SymbolDeclaration(symbol);
+            return TemplateManager.SymbolDeclaration(
+                _currentScope.GetSymbol(context.ID().GetText()).UpdateIndex(_currentScope.IncreasedIndex())
+            );
         }
 
         /// <summary>
@@ -141,10 +117,10 @@ namespace CMTC.Core
         public override Template VisitFunctionDecl([NotNull] CymbolParser.FunctionDeclContext context)
         {
             _templates.Push(
-                TemplateManager.FunctionDeclaration((MethodSymbol)global.GetMethod(context.ID().GetText()))
+                TemplateManager.FunctionDeclaration((MethodSymbol)_globalScope.GetMethod(context.ID().GetText()))
             );
 
-            _currentScope = global.GetMethod(context.ID().GetText());
+            _currentScope = _globalScope.GetMethod(context.ID().GetText());
             return _templates.Pop().Add("block", VisitBlock(context.block()));
         }
 
@@ -169,7 +145,6 @@ namespace CMTC.Core
                 }
             }
 
-            _localScopeVarIndex = 0;
             return _templates.Pop();
         }
 
@@ -192,7 +167,7 @@ namespace CMTC.Core
 
             if (context.returnStat() != null)
             {
-                //_templates.Peek().Add("statement", VisitReturnStat(context.returnStat()));
+                _templates.Peek().Add("statement", VisitReturnStat(context.returnStat()));
             }
 
             if (context.varDecl() != null)
@@ -227,11 +202,12 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override Template VisitReturnStat([NotNull] CymbolParser.ReturnStatContext context)
         {
-            _templates.Push(TemplateManager.GetTemplate("returnStatement"));
-            _templates.Peek().Add("expr", Visit(context.expr()));
-            _templates.Peek().Add("type", "int").Add("result", _expressionResults.Pop());
+            _templates.Peek().Add("statement", VisitExpr(context.expr()));
 
-            return _templates.Pop();
+            var template = TemplateManager.GetTemplate("returnStatement");
+            template.Add("symbol", _expressionResults.Pop().Value);
+
+            return template;
         }
 
         /// <summary>
@@ -246,7 +222,17 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override Template VisitAssignStat([NotNull] CymbolParser.AssignStatContext context)
         {
-            _templates.Push(TemplateManager.AssignStatement(new Symbol("tmp", 0), new Symbol("tmp", 1)));
+            _templates.Peek().Add("statement", VisitExpr(context.expr()));
+
+            var name = _currentScope.GetSymbol(context.ID().GetText()).Name;
+            var target = new Symbol(name, _currentScope.IncreasedIndex(), SymbolType.INT);
+            var source = new Symbol("source", _expressionResults.Pop().Value, SymbolType.INT);
+
+            _templates.Push(TemplateManager.AssignStatement(target, source));
+
+            // update variable
+            _currentScope.GetSymbol(context.ID().GetText()).Name = string.Format("{0}*", name);
+            _currentScope.GetChild(0).Define(target);
 
             return _templates.Pop();
         }
@@ -268,7 +254,22 @@ namespace CMTC.Core
         public override Template VisitExpr([NotNull] CymbolParser.ExprContext context)
         {
             _templates.Push(TemplateManager.GetTemplate("expression"));
-            
+
+            if (context.IsInteger())
+            {
+                var symbol = new Symbol("target", _currentScope.GetIndex(), SymbolType.INT);
+                _templates.Peek().Add("expr", TemplateManager.StoreStatement(symbol, context.GetText()));
+
+                _expressionResults.Push(Expression.Create(symbol.Position));
+            }
+
+            if (context.IsIdentifier())
+            {
+                _expressionResults.Push(
+                    Expression.Create(_currentScope.GetSymbol(context.ID().GetText()))  
+                );
+            }
+
             return _templates.Pop();
         }
 

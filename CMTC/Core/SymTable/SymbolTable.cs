@@ -29,21 +29,12 @@ namespace CMTC.Core.SymTable
         /// </summary>
         /// <value>The global.</value>
         public GlobalScope Global { get; private set; }
+
         /// <summary>
         /// Gets the scopes.
         /// </summary>
         /// <value>The scopes.</value>
         public Stack<IScope> Scopes { get; private set; }
-        /// <summary>
-        /// Gets or sets the position.
-        /// </summary>
-        /// <value>The position.</value>
-        public int Position { get; set; }
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is global.
-        /// </summary>
-        /// <value><c>true</c> if this instance is global; otherwise, <c>false</c>.</value>
-        public bool IsGlobal { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SymbolTable" /> class.
@@ -52,8 +43,6 @@ namespace CMTC.Core.SymTable
         {
             Scopes = new Stack<IScope>();
             Global = new GlobalScope(null);
-            Position = 0;
-            IsGlobal = true;
         }
     }
 }

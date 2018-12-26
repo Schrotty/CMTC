@@ -9,7 +9,7 @@ symbol(symbol) ::= <<
 
 symbolDeclaration(symbol) ::= <<
 <if(symbol.GlobalSymbol)><globalSymbolDeclaration(symbol)>
-<else><localSymbolDeclaration(symbol)><endif>
+<else><localSymbolDeclaration(symbol)><endif><\n>
 >>
 
 globalSymbolDeclaration(symbol) ::= <<
@@ -29,7 +29,7 @@ define <typeMap.(function.Type)> @<function.Name>(<parameterList(function.Parame
 >>
 
 parameterList(parameter) ::= <<
-<trunc(parameter):parameter()><typeMap.(last(parameter))>
+<if(parameter)><trunc(parameter):parameter()><typeMap.(last(parameter))><endif>
 >>
 
 parameter(parameter) ::= <<
@@ -57,15 +57,15 @@ args(parameter) ::= "<trunc(parameter):arg()><typeMap.(last(parameter))>"
 arg(type) ::= "<typeMap.(type)>, "
 
 addSubExpr(op, target, one, two) ::= <<
-<symbol(target)> = <opMap.(op)> <typeMap.(target.Type)> <symbol(one)>, <symbol(two)>
+<symbol(target)> = <opMap.(op)> <typeMap.(target.Type)> <symbol(one)>, <symbol(two)><\n>
 >>
 
 storeStat(target, source) ::= <<
-store <typeMap.(target.Type)> <source>, <typeMap.(target.Type)>* <symbol(target)>
+store <typeMap.(target.Type)> <source>, <typeMap.(target.Type)>* <symbol(target)><\n>
 >>
 
 assignStat(target, source) ::= <<
-<symbol(target)> = load <typeMap.(target.Type)>, <typeMap.(target.Type)>* <symbol(source)>
+<symbol(target)> = load <typeMap.(target.Type)>, <typeMap.(target.Type)>* <symbol(source)><\n>
 >>
 
 // ops & type maps

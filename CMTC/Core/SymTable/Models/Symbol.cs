@@ -99,7 +99,7 @@ namespace CMTC.Core.SymTable
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; private set; }
+        public string Name { get; set; }
         /// <summary>
         /// Gets the type.
         /// </summary>
@@ -139,6 +139,13 @@ namespace CMTC.Core.SymTable
         public Symbol(string name, int pos, SymbolType type) : this(name, pos)
         {
             Type = type;
+        }
+
+        public Symbol UpdateIndex(int index)
+        {
+            Position = index;
+
+            return this;
         }
 
         /// <summary>

@@ -28,32 +28,25 @@ namespace CMTC.Core.SymTable
         /// </summary>
         /// <returns>System.String.</returns>
         string GetScopeName();
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        string ToString();
+
         /// <summary>
         /// Defines the specified symbol.
         /// </summary>
         /// <param name="symbol">The symbol.</param>
         void Define(Symbol symbol);
+
         /// <summary>
         /// Gets the enclosing scope.
         /// </summary>
         /// <returns>IScope.</returns>
         IScope GetEnclosingScope();
+
         /// <summary>
         /// Resolves the specified name.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>SymbolType.</returns>
         SymbolType Resolve(string name);
-        /// <summary>
-        /// Sets the index of the next.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        void SetNextIndex(int index);
 
         /// <summary>
         /// Variables the is in scope.
@@ -61,6 +54,7 @@ namespace CMTC.Core.SymTable
         /// <param name="id">The identifier.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool VariableIsInScope(string id);
+
         /// <summary>
         /// Variables the is in scope nested.
         /// </summary>
@@ -68,18 +62,22 @@ namespace CMTC.Core.SymTable
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool VariableIsInScopeNested(string id);
 
+        Symbol GetSymbol(int identifier);
+
         /// <summary>
         /// Gets the symbol.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>Symbol.</returns>
         Symbol GetSymbol(string name);
+
         /// <summary>
         /// Gets the symbol global.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns>Symbol.</returns>
         Symbol GetSymbolGlobal(string name);
+
         /// <summary>
         /// Gets the symbol local.
         /// </summary>
@@ -93,17 +91,31 @@ namespace CMTC.Core.SymTable
         /// <param name="name">The name.</param>
         /// <returns>IScope.</returns>
         IScope GetMethod(string name);
+
         /// <summary>
         /// Gets the child.
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>IScope.</returns>
         IScope GetChild(int index);
+
         /// <summary>
         /// Adds the child.
         /// </summary>
         /// <param name="child">The child.</param>
         /// <returns>IScope.</returns>
         IScope AddChild(IScope child);
+
+        /// <summary>
+        /// Increases the index.
+        /// </summary>
+        /// <returns>System.Int32.</returns>
+        int IncreasedIndex();
+
+        /// <summary>
+        /// Gets the index.
+        /// </summary>
+        /// <returns>System.Int32.</returns>
+        int GetIndex();
     }
 }

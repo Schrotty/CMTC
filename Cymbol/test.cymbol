@@ -1,6 +1,6 @@
 ﻿int u;
 
-int main(int i, int l)
+int main()
 {
 	int integer;
 	integer = 42;
