@@ -80,5 +80,13 @@ namespace CMTC.Utilities
         /// <param name="method">The method.</param>
         /// <returns>Template.</returns>
         public static Template FunctionDeclaration(MethodSymbol method) => GetTemplate("function").Add("function", method);
+
+        /// <summary>
+        /// Assigns the statement.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>Template.</returns>
+        public static Template AssignStatement(Symbol target, Symbol source) => GetTemplate("assignStat").Add("target", target).Add("source", source);
     }
 }

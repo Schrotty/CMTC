@@ -57,7 +57,7 @@ namespace CMTC.Core
         /// <summary>
         /// The saved values
         /// </summary>
-        private readonly Dictionary<int, int> _savedValues = new Dictionary<int, int>();
+        private readonly Dictionary<int, Symbol> _symbols = new Dictionary<int, Symbol>();
 
         /// <summary>
         /// The global
@@ -144,6 +144,7 @@ namespace CMTC.Core
                 TemplateManager.FunctionDeclaration((MethodSymbol)global.GetMethod(context.ID().GetText()))
             );
 
+            _currentScope = global.GetMethod(context.ID().GetText());
             return _templates.Pop().Add("block", VisitBlock(context.block()));
         }
 
@@ -245,22 +246,7 @@ namespace CMTC.Core
         /// <return>The visitor result.</return>
         public override Template VisitAssignStat([NotNull] CymbolParser.AssignStatContext context)
         {
-            _parent = "assign";
-
-            _templates.Peek().Add("statement", Visit(context.expr()));
-            _templates.Push(TemplateManager.GetTemplate("loadValue"));
-
-            var isGlobal = global.GetSymbolLocal(context.ID().GetText()) != null;
-            var source = _currentScope.GetSymbol(context.ID().GetText()).Position.ToString();
-            if (isGlobal) source = context.ID().GetText();
-
-            _templates.Peek()
-                .Add("type", "int")
-                .Add("source", source)
-                .Add("globalSource", isGlobal)
-                .Add("target", ++((Symbol)_currentScope).Position);
-
-            _currentScope.GetSymbol(context.ID().GetText()).Position = ((Symbol)_currentScope).Position;
+            _templates.Push(TemplateManager.AssignStatement(new Symbol("tmp", 0), new Symbol("tmp", 1)));
 
             return _templates.Pop();
         }
@@ -282,67 +268,7 @@ namespace CMTC.Core
         public override Template VisitExpr([NotNull] CymbolParser.ExprContext context)
         {
             _templates.Push(TemplateManager.GetTemplate("expression"));
-
-            foreach (var c in context.expr())
-            {
-                _templates.Peek().Add("expr", Visit(c));
-            }
-
-            var symbol = (Symbol)_currentScope;
-            if (context.ChildCount == 1)
-            {
-                if (context.INT() != null)
-                {
-                    var rInt = -1;
-                    var integer = -1;
-                    int.TryParse(context.INT().GetText(), out rInt);
-
-                    var valExists = _savedValues.TryGetValue(rInt, out integer);
-                    if (!valExists && _parent != "assign")
-                    {
-                        _templates.Peek().Add("expr",
-                            TemplateManager.GetTemplate("symbol")
-                                .Add("type", "int")
-                                .Add("id", ++((Symbol)_currentScope).Position));
-                    }
-
-                    var isGlobal = global.GetSymbolLocal(context.ID().GetText()) != null;
-                    var source = _currentScope.GetSymbol(context.ID().GetText()).Position.ToString();
-                    if (isGlobal) source = context.ID().GetText();
-
-                    var pos = !valExists ? ((Symbol)_currentScope).Position : integer;
-                    _templates.Peek().Add("expr", 
-                        TemplateManager.GetTemplate("storeValue")
-                            .Add("type", "int")
-                            .Add("source", context.INT().GetText())
-                            .Add("target", pos));
-
-                    if (!valExists && _parent != "assign")
-                    {
-                        _templates.Peek().Add("expr",
-                            TemplateManager.GetTemplate("loadValue")
-                                .Add("type", "int")
-                                .Add("source", pos)
-                                .Add("target", ++((Symbol)_currentScope).Position));
-                    }
-                }
-            }
-
-            if (context.ChildCount == 3)
-            {
-                var op2 = _expressionResults.Pop();
-                var op = context.GetChild(1);
-                _templates.Peek().Add("expr", 
-                    TemplateManager.GetTemplate("addSubExpr")
-                        .Add("index", ++symbol.Position)
-                        .Add("type", "int")
-                        .Add("op", op)
-                        .Add("op1", _expressionResults.Pop())
-                        .Add("op2", op2));
-            }
-
-            _parent = string.Empty;
-            _expressionResults.Push(symbol.Position);
+            
             return _templates.Pop();
         }
 

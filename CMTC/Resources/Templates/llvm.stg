@@ -56,23 +56,19 @@ methodCallExpr(symbol, method) ::= <<
 args(parameter) ::= "<trunc(parameter):arg()><typeMap.(last(parameter))>"
 arg(type) ::= "<typeMap.(type)>, "
 
-addSubExpr(index, type, op, op1, op2) ::= <<
-	%<index> = <opMap.(op)> <typeMap.(type)> %<op1>, %<op2>
-
+addSubExpr(op, target, one, two) ::= <<
+<symbol(target)> = <opMap.(op)> <typeMap.(target.Type)> <symbol(one)>, <symbol(two)>
 >>
 
-storeValue(type, source, target) ::= <<
-	store <typeMap.(type)> <source>, <typeMap.(type)>* %<target>
-
+storeStat(target, source) ::= <<
+store <typeMap.(target.Type)> <source>, <typeMap.(target.Type)>* <symbol(target)>
 >>
 
-loadValue(target, type, source, globalSource) ::= <<
-	%<target> = load <typeMap.(type)>, <typeMap.(type)>* <if(globalSource)>@<else>%<endif><source>
-
+assignStat(target, source) ::= <<
+<symbol(target)> = load <typeMap.(target.Type)>, <typeMap.(target.Type)>* <symbol(source)>
 >>
 
-int(value) ::= "<value>"
-
+// ops & type maps
 opMap ::= [
 	"+":"add",
 	"-":"sub"
