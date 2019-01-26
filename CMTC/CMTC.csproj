@@ -5,19 +5,37 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <StartupObject>CMTC.Program</StartupObject>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>Ruben Maurer</Authors>
+    <Description>Cymbol Multi Target Compiler</Description>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>CMTC.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+    <ApplicationIcon></ApplicationIcon>
+    <Win32Resource />
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;3021</NoWarn>
+    <PlatformTarget>x64</PlatformTarget>
+    <DocumentationFile>C:\Users\ruben\Source\Repos\CMTC\CMTC\CMTC.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\ruben\Source\Repos\CMTC\CMTC\CMTC.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\Templates\llvm.stg" />
+    <None Remove="Resources\Templates\pcode.stg" />
     <None Remove="Resources\Templates\system.stg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\Templates\llvm.stg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Templates\pcode.stg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Templates\system.stg">
@@ -38,9 +56,6 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CustomToolNamespace>CMTC.Core</CustomToolNamespace>
-    </None>
-    <None Update="Resources\Templates\cyp.stg">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

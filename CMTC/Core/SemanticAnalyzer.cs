@@ -80,7 +80,7 @@ namespace CMTC.Core
         {
             if (!_symbolTable.Scopes.Peek().VariableIsInScope(context.ID().GetText()))
             {
-                _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().ToString(), -1, _symbolTable.Global.Resolve(context.type().Start.Text))
+                _symbolTable.Scopes.Peek().Define(new Symbol(context.ID().GetText(), -1, _symbolTable.Global.Resolve(context.type().GetText()))
                 {
                     GlobalSymbol = _globalContext
                 });
@@ -107,24 +107,32 @@ namespace CMTC.Core
         {
             if (!_symbolTable.Global.VariableIsInScope(context.ID().GetText()))
             {
-                MethodSymbol method = new MethodSymbol(context.ID().ToString(),
+                var funcName = context.ID().GetText();
+                MethodSymbol method = new MethodSymbol(funcName,
                     _symbolTable.Global.Resolve(context.type().Start.Text), _symbolTable.Global);
 
                 if (context.HasValidReturnStatement(method, _symbolTable.Global))
                 {
+                    var index = 0;
                     _symbolTable.Global.Define(method);
                     if (context.formalParameters() != null)
                     {
-                        var index = 1;
                         foreach (var c in context.formalParameters().formalParameter())
                         {
-                            method.Define(new Symbol(c.ID().ToString(), index++,
-                                _symbolTable.Global.Resolve(c.type().Start.Text)));
+                            var identifier = c.ID().GetText().Trim(trimChars: new char[] { '*', '[', ']' });
+                            var tmp = new Symbol(identifier, index++,
+                                _symbolTable.Global.Resolve(c.type().GetText()));
+
+                            method.Define(tmp);
                         }
                     }
 
                     _symbolTable.Scopes.Push(method);
                     _symbolTable.Scopes.Peek().AddChild(Visit(context.block()));
+                    if (index > 0)
+                    {
+                        _symbolTable.Scopes.Peek().GetChild(0).Define(new Symbol(string.Format("placeholder.{0}", index), index));
+                    }
 
                     return _symbolTable.Scopes.Pop();
                 }
@@ -262,6 +270,21 @@ namespace CMTC.Core
             Visit(context.expr());
 
             return _symbolTable.Scopes.Peek();
+        }
+
+        public override IScope VisitExpr([NotNull] CymbolParser.ExprContext context)
+        {
+            if (context.IsNegation() && !context.IsValidNegation())
+            {
+                throw new System.Exception(TemplateManager.GetTemplate("INVALID_NEGATION").Render());
+            }
+
+            if (context.IsMinus() && !context.IsValidMinus())
+            {
+                throw new System.Exception(TemplateManager.GetTemplate("INVALID_MINUS").Render());
+            }
+
+            return base.VisitExpr(context);
         }
     }
 }

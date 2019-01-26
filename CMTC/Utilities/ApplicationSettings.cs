@@ -13,6 +13,7 @@
 // ***********************************************************************
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// The Utilities namespace.
@@ -27,7 +28,10 @@ namespace CMTC.Utilities
         /// <summary>
         /// The settings
         /// </summary>
-        private static List<KeyValuePair<string, string>> _settings = new List<KeyValuePair<string, string>>();
+        private static List<KeyValuePair<string, string>> _settings = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("target", "llvm")
+        };
 
         /// <summary>
         /// Appies the settings.
@@ -40,9 +44,15 @@ namespace CMTC.Utilities
             {
                 foreach (var argument in args)
                 {
+                    var value = argument.Substring(3);
                     if (argument.StartsWith("-o"))
                     {
-                        Set("output", argument.Substring(2));
+                        Set("output", value);
+                    }
+
+                    if (argument.StartsWith("-t"))
+                    {
+                        Set("target", value);
                     }
                 }
 
@@ -69,6 +79,7 @@ namespace CMTC.Utilities
         /// <param name="value">The value.</param>
         public static void Set(string key, string value)
         {
+            _settings.Remove(_settings.Where(x => x.Key.Equals("target")).Single());
             _settings.Add(new KeyValuePair<string, string>(key, value));
         }
     }

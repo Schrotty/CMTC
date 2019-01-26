@@ -92,7 +92,13 @@ namespace CMTC.Core.SymTable
             /// <summary>
             /// The int
             /// </summary>
-            INT
+            INT,
+            INT_P,
+            BOOL,
+            LABEL,
+            CHAR,
+            CHAR_ARRAY,
+            CHAR_ARRAY_P
         }
 
         /// <summary>
@@ -104,7 +110,7 @@ namespace CMTC.Core.SymTable
         /// Gets the type.
         /// </summary>
         /// <value>The type.</value>
-        public SymbolType Type { get; private set; }
+        public SymbolType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the position.

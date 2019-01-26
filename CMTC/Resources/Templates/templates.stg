@@ -1,0 +1,44 @@
+declareGlobals(count)           ::=     ".globals <count><\n>"
+functionDecl(id,block)          ::=     ".def <id>: args=0, locals=0<\n><block>"
+callFunction(id)                ::=     "<\t>call <id>()"
+block(stats)                    ::=     "<stats:{stat|<stat><\n>}>"
+stopProgram()                   ::=     "<\t>halt<\n>"
+int(val)                        ::=     "<\t>iconst <val>"
+return(val)                     ::=     "<val><\n><\t>ret"
+assignVariable(idx,val)         ::=     "<val><\n><\t>gstore <idx>"
+loadVariable(idx)               ::=     "<\t>gload <idx>"
+print(val)                      ::=     "<val><\n><\t>print"
+mult(x,y)                       ::=     "<x><\n><y><\n><\t>imul"
+add(x,y)                        ::=     "<x><\n><y><\n><\t>iadd"
+sub(x,y)                        ::=     "<x><\n><y><\n><\t>isub"
+not(val,i)                      ::=     "<ifElse(val,notTru(),tru(),i)>"
+equals(x,y)                     ::=     "<x><\n><y><\n><\t>ieq"
+unEquals(x,y,i)                 ::=     "<not(equals(x,y),i)>"
+
+greater(x,y)                    ::=     << <x><\n><y><\n><\t>ilt >>
+smaller(x,y)                    ::=     << <greater(y,x)> >>
+cond(cond,t,f,i)                ::=     << <ifElse(cond,t,f,i)> >>
+negate(val)                     ::=     << <mult(int("-1"), val)> >>
+tru()                           ::=     << <equals(int("1"),int("1"))> >>
+notTru()                        ::=     << <equals(int("1"),int("2"))> >>
+
+ifElse(cond,t,f,i)              ::=     <%
+                                        <cond><\n>
+                                        <\t>brf ifFalse<i><\n>
+                                        <t><\n>
+                                        <\t>br fin<i><\n>
+                                        <\t>ifFalse<i>:<\n>
+                                        <f><\n>
+                                        <\t>fin<i>:<\n>
+                                        %>
+
+for(assign,cond,step,block,i)   ::=     <%
+                                        <assign><\n>
+                                        <\t>begin<i>:<\n>
+                                        <cond><\n>
+                                        <\t>brf end<i><\n>
+                                        <block><\n>
+                                        <step><\n>
+                                        <\t>br begin<i><\n>
+                                        <\t>end<i>:<\n>
+                                        %>

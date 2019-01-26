@@ -1,11 +1,9 @@
-file(symbols) ::= <<
+﻿file(symbols) ::= <<
 @.str = private unnamed_addr constant [5 x i8] c"%d\0D\0A\00"
 
 <symbols>
-declare i32 @printf(i8*, ...)
 
-; Function Attrs: nounwind readonly
-declare i32 @atoi(i8*)
+declare i32 @printf(i8*, ...)
 >>
 
 // variable templates
@@ -70,7 +68,7 @@ ret i32 <integer>
 >>
 
 methodCallExpr(symbol, method, parameter) ::= <<
-<symbol(symbol)> = call <typeMap.(method.Type)> @<method.Name>(<if(parameter)><param(parameter)><endif>)<\n>
+<symbol(symbol)> = call <typeMap.(method.Type)> @<method.Name>(<if(parameter)><param(parameter)><endif>)
 >>
 
 param(parameter) ::= "<trunc(parameter):para()><typeMap.(last(parameter).Key)> <last(parameter).Value>"
@@ -155,10 +153,6 @@ forLoop(init, header, headerExpr, headerResult, body, bodyStat, exit, footer, fo
 <label(exit)>
 %>
 
-getElementPtr(target, source, index) ::= <<
-<symbol(target)> = getelementptr inbounds <typeMap.(target.Type)>, <typeMap.(source.Type)> <symbol(source)>, i64 <index><\n>
->>
-
 IsNull ::= ["": true, default: false]
 
 // ops & type maps
@@ -177,10 +171,7 @@ typeMap ::= [
 	"INT":"i32",
 	"INT_P":"i32",
 	"BOOL":"i1",
-	"VOID":"void",
-	"CHAR":"i8*",
-	"CHAR_ARRAY_P":"i8**",
-	"CHAR_ARRAY":"i8**"
+	"VOID":"void"
 ]
 
 typeDefaultValues ::= [

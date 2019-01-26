@@ -1,0 +1,3596 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CMTC</name>
+    </assembly>
+    <members>
+        <member name="T:CMTC.Core.CMTCompiler">
+            <summary>
+            Class CMTCompiler.
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.CMTCompiler.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.CMTCompiler" /> class.
+            </summary>
+            <param name="source">The source.</param>
+        </member>
+        <member name="M:CMTC.Core.CMTCompiler.Execute(System.String,System.String)">
+            <summary>
+            Executes the specified source.
+            </summary>
+            <param name="source">The source.</param>
+        </member>
+        <member name="T:CMTC.Core.CodeGenerator">
+            <summary>
+            Class CodeGenerator.
+            </summary>
+            <seealso cref="!:CymbolBaseVisitor&lt;Antlr4.StringTemplate.Template&gt;" />
+        </member>
+        <member name="F:CMTC.Core.CodeGenerator._templates">
+            <summary>
+            The templates
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.CodeGenerator._expressionResults">
+            <summary>
+            The expression results
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.CodeGenerator._pairs">
+            <summary>
+            The pairs
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.CodeGenerator._globalScope">
+            <summary>
+            The global
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.CodeGenerator._currentScope">
+            <summary>
+            The current scope
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.#ctor(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.CodeGenerator" /> class.
+            </summary>
+            <param name="global">The global.</param>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitFile(CymbolParser.FileContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitStat(CymbolParser.StatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.CodeGenerator.VisitExpr(CymbolParser.ExprContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Template.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="T:CMTC.Core.Extensions.FunctionDeclContextExt">
+            <summary>
+            Class FunctionDeclContextExt.
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.Extensions.FunctionDeclContextExt.HasValidReturnStatement(CymbolParser.FunctionDeclContext,CMTC.Core.SymTable.Symbol.MethodSymbol,CMTC.Core.SymTable.IScope)">
+            <summary>
+            Determines whether [has valid return statement] [the specified method].
+            </summary>
+            <param name="context">The context.</param>
+            <param name="method">The method.</param>
+            <param name="scope">The scope.</param>
+            <returns><c>true</c> if [has valid return statement] [the specified method]; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="M:CMTC.Core.Extensions.StatContextExt.IsBlock(CymbolParser.StatContext)">
+            <summary>
+            Determines whether the specified context is block.
+            </summary>
+            <param name="context">The context.</param>
+            <returns><c>true</c> if the specified context is block; otherwise, <c>false</c>.</returns>
+        </member>
+        <member name="T:CMTC.Core.SemanticAnalyzer">
+            <summary>
+            Class SemanticAnalyzer.
+            Implements the <see cref="!:CymbolBaseVisitor&lt;CMTC.Core.SymTable.IScope&gt;" />
+            </summary>
+            <seealso cref="!:CymbolBaseVisitor&lt;CMTC.Core.SymTable.IScope&gt;" />
+        </member>
+        <member name="F:CMTC.Core.SemanticAnalyzer._symbolTable">
+            <summary>
+            The symbol table
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitFile(CymbolParser.FileContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <exception cref="T:System.Exception">Nope</exception>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <exception cref="T:System.Exception">
+            </exception>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)">
+            <summary>
+            <inheritDoc />
+            <p>The default implementation returns the result of
+            <see cref="P:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.DefaultResult">defaultResult</see>
+            .</p>
+            </summary>
+            <param name="node">The node.</param>
+            <returns>IScope.</returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CMTC.Core.SemanticAnalyzer.VisitPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Visits the print stat.
+            </summary>
+            <param name="context">The context.</param>
+            <returns>IScope.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="T:CMTC.Core.SymTable.BaseScope">
+            <summary>
+            Class BaseScope.
+            Implements the <see cref="T:CMTC.Core.SymTable.IScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.IScope" />
+            <summary>
+            Class BaseScope.
+            Implements the <see cref="T:CMTC.Core.SymTable.IScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.IScope" />
+            <summary>
+            Class BaseScope.
+            Implements the <see cref="T:CMTC.Core.SymTable.IScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.IScope" />
+        </member>
+        <member name="F:CMTC.Core.SymTable.BaseScope._symbols">
+            <summary>
+            The symbols
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.BaseScope._enclosing">
+            <summary>
+            The enclosing
+            </summary>
+        </member>
+        <member name="P:CMTC.Core.SymTable.BaseScope.Children">
+            <summary>
+            Gets the children.
+            </summary>
+            <value>The children.</value>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetScopeName">
+            <summary>
+            Gets the name of the scope.
+            </summary>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.#ctor(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.BaseScope" /> class.
+            </summary>
+            <param name="enclosing">The enclosing.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.Define(CMTC.Core.SymTable.Symbol)">
+            <summary>
+            Defines the specified symbol.
+            </summary>
+            <param name="symbol">The symbol.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetEnclosingScope">
+            <summary>
+            Gets the enclosing scope.
+            </summary>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.Resolve(System.String)">
+            <summary>
+            Resolves the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>SymbolType.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.VariableIsInScope(System.String)">
+            <summary>
+            Variables the is in scope.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.VariableIsInScopeNested(System.String)">
+            <summary>
+            Variables the is in scope nested.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.VariableIsInScopeNested(System.String,CMTC.Core.SymTable.IScope)">
+            <summary>
+            Variables the is in scope nested.
+            </summary>
+            <param name="id">The identifier.</param>
+            <param name="scope">The scope.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetChild(System.String)">
+            <summary>
+            Gets the child.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetSymbol(System.String)">
+            <summary>
+            Gets the symbol.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetSymbolGlobal(System.String)">
+            <summary>
+            Gets the symbol global.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetSymbolLocal(System.String)">
+            <summary>
+            Gets the symbol local.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetChild(System.Int32)">
+            <summary>
+            Gets the child.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.AddChild(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Adds the child.
+            </summary>
+            <param name="child">The child.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetMethod(System.String)">
+            <summary>
+            Gets the method.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.IncreasedIndex">
+            <summary>
+            Increases the index.
+            </summary>
+            <returns>System.Int32.</returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GetIndex">
+            <summary>
+            Gets the index.
+            </summary>
+            <returns>System.Int32.</returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:CMTC.Core.SymTable.BaseScope.GlobalScope">
+            <summary>
+            Class GlobalScope.
+            Implements the <see cref="T:CMTC.Core.SymTable.BaseScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.BaseScope" />
+        </member>
+        <member name="F:CMTC.Core.SymTable.BaseScope.GlobalScope.Variables">
+            <summary>
+            The variables
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.BaseScope.GlobalScope.Methods">
+            <summary>
+            The methods
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GlobalScope.#ctor(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.BaseScope.GlobalScope" /> class.
+            </summary>
+            <param name="enclosing">The enclosing.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GlobalScope.DefineMethod(CMTC.Core.SymTable.Symbol.MethodSymbol)">
+            <summary>
+            Defines the method.
+            </summary>
+            <param name="method">The method.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GlobalScope.DefineVariable(CMTC.Core.SymTable.Symbol)">
+            <summary>
+            Defines the variable.
+            </summary>
+            <param name="symbol">The symbol.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.GlobalScope.GetScopeName">
+            <summary>
+            Gets the name of the scope.
+            </summary>
+            <returns>System.String.</returns>
+        </member>
+        <member name="T:CMTC.Core.SymTable.BaseScope.LocalScope">
+            <summary>
+            Class LocalScope.
+            Implements the <see cref="T:CMTC.Core.SymTable.BaseScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.BaseScope" />
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.LocalScope.#ctor(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.BaseScope.LocalScope" /> class.
+            </summary>
+            <param name="enclosing">The enclosing.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.BaseScope.LocalScope.GetScopeName">
+            <summary>
+            Gets the name of the scope.
+            </summary>
+            <returns>System.String.</returns>
+        </member>
+        <member name="T:CMTC.Core.SymTable.IScope">
+            <summary>
+            Interface IScope
+            </summary>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetScopeName">
+            <summary>
+            Gets the name of the scope.
+            </summary>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.Define(CMTC.Core.SymTable.Symbol)">
+            <summary>
+            Defines the specified symbol.
+            </summary>
+            <param name="symbol">The symbol.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetEnclosingScope">
+            <summary>
+            Gets the enclosing scope.
+            </summary>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.Resolve(System.String)">
+            <summary>
+            Resolves the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>SymbolType.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.VariableIsInScope(System.String)">
+            <summary>
+            Variables the is in scope.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.VariableIsInScopeNested(System.String)">
+            <summary>
+            Variables the is in scope nested.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetSymbol(System.String)">
+            <summary>
+            Gets the symbol.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetSymbolGlobal(System.String)">
+            <summary>
+            Gets the symbol global.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetSymbolLocal(System.String)">
+            <summary>
+            Gets the symbol local.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetMethod(System.String)">
+            <summary>
+            Gets the method.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetChild(System.Int32)">
+            <summary>
+            Gets the child.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.AddChild(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Adds the child.
+            </summary>
+            <param name="child">The child.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.IncreasedIndex">
+            <summary>
+            Increases the index.
+            </summary>
+            <returns>System.Int32.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.IScope.GetIndex">
+            <summary>
+            Gets the index.
+            </summary>
+            <returns>System.Int32.</returns>
+        </member>
+        <member name="T:CMTC.Core.SymTable.Symbol">
+            <summary>
+            Class Symbol.
+            </summary>
+            <summary>
+            The none
+            </summary>
+            <summary>
+            Class Symbol.
+            </summary>
+            <summary>
+            Class Symbol.
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.NONE">
+            <summary>
+            The none
+            <summary>
+            The void
+            </summary>
+            </summary>
+        </member>
+        <member name="T:CMTC.Core.SymTable.Symbol.SymbolType">
+            <summary>
+            <summary>
+            The int
+            </summary>
+            Enum SymbolType
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.SymbolType.NONE">
+            <summary>
+            The none
+            </summary>
+            <summary>
+            The none
+            </summary>
+            <summary>
+            The none
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.SymbolType.VOID">
+            <summary>
+            The void
+            </summary>
+            <summary>
+            The void
+            </summary>
+            <summary>
+            The void
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.SymbolType.INT">
+            <summary>
+            The int
+            </summary>
+            <summary>
+            The int
+            </summary>
+            <summary>
+            The int
+            </summary>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.Type">
+            <summary>
+            Gets the type.
+            </summary>
+            <value>The type.</value>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.Position">
+            <summary>
+            Gets or sets the position.
+            </summary>
+            <value>The position.</value>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.GlobalSymbol">
+            <summary>
+            Gets or sets a value indicating whether [global symbol].
+            </summary>
+            <value><c>true</c> if [global symbol]; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol" /> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="pos">The position.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.#ctor(System.String,System.Int32,CMTC.Core.SymTable.Symbol.SymbolType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol" /> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="pos">The position.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.ToString">
+            <summary>
+            Returns a <see cref="T:System.String" /> that represents this instance.
+            </summary>
+            <returns>A <see cref="T:System.String" /> that represents this instance.</returns>
+        </member>
+        <member name="T:CMTC.Core.SymTable.Symbol.MethodSymbol">
+            <summary>
+            Class MethodSymbol.
+            Implements the <see cref="T:CMTC.Core.SymTable.Symbol" />
+            Implements the <see cref="T:CMTC.Core.SymTable.IScope" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.Symbol" />
+            <seealso cref="T:CMTC.Core.SymTable.IScope" />
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.MethodSymbol._symbols">
+            <summary>
+            The symbols
+            </summary>
+        </member>
+        <member name="F:CMTC.Core.SymTable.Symbol.MethodSymbol._enclosing">
+            <summary>
+            The enclosing
+            </summary>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.MethodSymbol.Child">
+            <summary>
+            Gets the child.
+            </summary>
+            <value>The child.</value>
+        </member>
+        <member name="P:CMTC.Core.SymTable.Symbol.MethodSymbol.Parameter">
+            <summary>
+            Parameters this instance.
+            </summary>
+            <returns>List&lt;System.String&gt;.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol.MethodSymbol" /> class.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.#ctor(System.String,CMTC.Core.SymTable.Symbol.SymbolType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol.MethodSymbol" /> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.#ctor(System.String,CMTC.Core.SymTable.Symbol.SymbolType,CMTC.Core.SymTable.IScope)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol.MethodSymbol" /> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="returnType">Type of the return.</param>
+            <param name="enclosing">The enclosing.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.Define(CMTC.Core.SymTable.Symbol)">
+            <summary>
+            Defines the specified symbol.
+            </summary>
+            <param name="symbol">The symbol.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetChild(System.String)">
+            <summary>
+            Gets the child.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetChild(System.Int32)">
+            <summary>
+            Gets the child.
+            </summary>
+            <param name="index">The index.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetEnclosingScope">
+            <summary>
+            Gets the enclosing scope.
+            </summary>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetScopeName">
+            <summary>
+            Gets the name of the scope.
+            </summary>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetSymbol(System.String)">
+            <summary>
+            Gets the symbol.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetSymbolGlobal(System.String)">
+            <summary>
+            Gets the symbol global.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.Resolve(System.String)">
+            <summary>
+            Resolves the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>SymbolType.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.VariableIsInScope(System.String)">
+            <summary>
+            Variables the is in scope.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.VariableIsInScopeNested(System.String)">
+            <summary>
+            Variables the is in scope nested.
+            </summary>
+            <param name="id">The identifier.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.AddChild(CMTC.Core.SymTable.IScope)">
+            <summary>
+            Adds the child.
+            </summary>
+            <param name="child">The child.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetMethod(System.String)">
+            <summary>
+            Gets the method.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>IScope.</returns>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.SetNextIndex(System.Int32)">
+            <summary>
+            Sets the index of the next.
+            </summary>
+            <param name="index">The index.</param>
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.MethodSymbol.GetSymbolLocal(System.String)">
+            <summary>
+            Gets the symbol local.
+            </summary>
+            <param name="name">The name.</param>
+            <returns>Symbol.</returns>
+        </member>
+        <member name="T:CMTC.Core.SymTable.Symbol.None">
+            <summary>
+            Class None.
+            Implements the <see cref="T:CMTC.Core.SymTable.Symbol" />
+            </summary>
+            <seealso cref="T:CMTC.Core.SymTable.Symbol" />
+        </member>
+        <member name="M:CMTC.Core.SymTable.Symbol.None.#ctor(System.String,CMTC.Core.SymTable.Symbol.SymbolType)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.Symbol.None" /> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="type">The type.</param>
+        </member>
+        <member name="T:CMTC.Core.SymTable.SymbolTable">
+            <summary>
+            Class SymbolTable.
+            </summary>
+        </member>
+        <member name="P:CMTC.Core.SymTable.SymbolTable.Global">
+            <summary>
+            Gets the global.
+            </summary>
+            <value>The global.</value>
+        </member>
+        <member name="P:CMTC.Core.SymTable.SymbolTable.Scopes">
+            <summary>
+            Gets the scopes.
+            </summary>
+            <value>The scopes.</value>
+        </member>
+        <member name="M:CMTC.Core.SymTable.SymbolTable.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Core.SymTable.SymbolTable" /> class.
+            </summary>
+        </member>
+        <member name="T:CMTC.Program">
+            <summary>
+            Class Program.
+            </summary>
+        </member>
+        <member name="M:CMTC.Program.Main(System.String[])">
+            <summary>
+            Defines the entry point of the application.
+            </summary>
+            <param name="args">The arguments.</param>
+        </member>
+        <member name="T:CMTC.Properties.Resources">
+            <summary>
+            Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+            </summary>
+        </member>
+        <member name="F:CMTC.Properties.Resources.resourceMan">
+            <summary>
+            The resource man
+            </summary>
+        </member>
+        <member name="F:CMTC.Properties.Resources.resourceCulture">
+            <summary>
+            The resource culture
+            </summary>
+        </member>
+        <member name="M:CMTC.Properties.Resources.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CMTC.Properties.Resources" /> class.
+            </summary>
+        </member>
+        <member name="P:CMTC.Properties.Resources.ResourceManager">
+            <summary>
+            Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+            </summary>
+            <value>The resource manager.</value>
+        </member>
+        <member name="P:CMTC.Properties.Resources.Culture">
+            <summary>
+            Gets or sets the culture.
+            </summary>
+            <value>The culture.</value>
+        </member>
+        <member name="P:CMTC.Properties.Resources.TemplateNamespace">
+            <summary>
+            Sucht eine lokalisierte Zeichenfolge, die CMTC.Resources.Templates. ähnelt.
+            </summary>
+            <value>The template namespace.</value>
+        </member>
+        <member name="P:CMTC.Properties.Resources.Templates">
+            <summary>
+            Sucht eine lokalisierte Zeichenfolge, die llvm.stg;system.stg;cyp.stg ähnelt.
+            </summary>
+            <value>The templates.</value>
+        </member>
+        <member name="T:CMTC.Utilities.ApplicationSettings">
+            <summary>
+            Class ApplicationSettings.
+            </summary>
+        </member>
+        <member name="F:CMTC.Utilities.ApplicationSettings._settings">
+            <summary>
+            The settings
+            </summary>
+        </member>
+        <member name="M:CMTC.Utilities.ApplicationSettings.AppySettings(System.String[])">
+            <summary>
+            Appies the settings.
+            </summary>
+            <param name="args">The arguments.</param>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:CMTC.Utilities.ApplicationSettings.Get(System.String)">
+            <summary>
+            Gets the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <returns>System.String.</returns>
+        </member>
+        <member name="M:CMTC.Utilities.ApplicationSettings.Set(System.String,System.String)">
+            <summary>
+            Sets the specified key.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="T:CMTC.Utilities.FileUtilities">
+            <summary>
+            Class FileUtilities.
+            </summary>
+        </member>
+        <member name="M:CMTC.Utilities.FileUtilities.ReadFile(System.String)">
+            <summary>
+            Reads the file.
+            </summary>
+            <param name="file">The file.</param>
+            <returns>System.String.</returns>
+            <exception cref="T:System.IO.FileNotFoundException"></exception>
+        </member>
+        <member name="M:CMTC.Utilities.FileUtilities.WriteFile(System.String,System.String)">
+            <summary>
+            Writes the file.
+            </summary>
+            <param name="file">The file.</param>
+            <param name="content">The content.</param>
+        </member>
+        <member name="T:CMTC.Utilities.TemplateManager">
+            <summary>
+            Class TemplateManager.
+            </summary>
+        </member>
+        <member name="F:CMTC.Utilities.TemplateManager._templates">
+            <summary>
+            The templates
+            </summary>
+        </member>
+        <member name="F:CMTC.Utilities.TemplateManager._instance">
+            <summary>
+            The instance
+            </summary>
+        </member>
+        <member name="M:CMTC.Utilities.TemplateManager.GetTemplate(System.String)">
+            <summary>
+            Gets the template.
+            </summary>
+            <param name="template">The template.</param>
+            <returns>Template.</returns>
+        </member>
+        <member name="M:CMTC.Utilities.TemplateManager.#ctor">
+            <summary>
+            Prevents a default instance of the <see cref="T:CMTC.Utilities.TemplateManager" /> class from being created.
+            </summary>
+        </member>
+        <member name="M:CMTC.Utilities.TemplateManager.SymbolDeclaration(CMTC.Core.SymTable.Symbol)">
+            <summary>
+            Symbols the declaration.
+            </summary>
+            <param name="symbol">The symbol.</param>
+            <returns>Template.</returns>
+        </member>
+        <member name="M:CMTC.Utilities.TemplateManager.FunctionDeclaration(CMTC.Core.SymTable.Symbol.MethodSymbol)">
+            <summary>
+            Functions the declaration.
+            </summary>
+            <param name="method">The method.</param>
+            <returns>Template.</returns>
+        </member>
+        <member name="M:CMTC.Utilities.TemplateManager.AssignStatement(CMTC.Core.SymTable.Symbol,System.Object)">
+            <summary>
+            Assigns the statement.
+            </summary>
+            <param name="target">The target.</param>
+            <param name="source">The source.</param>
+            <returns>Template.</returns>
+        </member>
+        <member name="T:CymbolBaseListener">
+            <summary>
+            This class provides an empty implementation of <see cref="T:ICymbolListener" />,
+            which can be extended to create a listener which only needs to handle a subset
+            of the available methods.
+            Implements the <see cref="T:ICymbolListener" />
+            </summary>
+            <seealso cref="T:ICymbolListener" />
+        </member>
+        <member name="M:CymbolBaseListener.EnterFile(CymbolParser.FileContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.file" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitFile(CymbolParser.FileContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterStat(CymbolParser.StatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitStat(CymbolParser.StatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterBlock(CymbolParser.BlockContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.block" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.args" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.args" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterType(CymbolParser.TypeContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.type" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitType(CymbolParser.TypeContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.type" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterExpr(CymbolParser.ExprContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitExpr(CymbolParser.ExprContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterId(CymbolParser.IdContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.id" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitId(CymbolParser.IdContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.id" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterInt(CymbolParser.IntContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="!:CymbolParser.int" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.ExitInt(CymbolParser.IntContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="!:CymbolParser.int" />.
+            <para>The default implementation does nothing.</para>
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:CymbolBaseListener.EnterEveryRule(Antlr4.Runtime.ParserRuleContext)">
+            <summary>
+            Enters the every rule.
+            </summary>
+            <param name="context">The context.</param>
+            <inheritdoc />
+            <remarks>The default implementation does nothing.</remarks>
+        </member>
+        <member name="M:CymbolBaseListener.ExitEveryRule(Antlr4.Runtime.ParserRuleContext)">
+            <summary>
+            Exits the every rule.
+            </summary>
+            <param name="context">The context.</param>
+            <inheritdoc />
+            <remarks>The default implementation does nothing.</remarks>
+        </member>
+        <member name="M:CymbolBaseListener.VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)">
+            <summary>
+            Visits the terminal.
+            </summary>
+            <param name="node">The node.</param>
+            <inheritdoc />
+            <remarks>The default implementation does nothing.</remarks>
+        </member>
+        <member name="M:CymbolBaseListener.VisitErrorNode(Antlr4.Runtime.Tree.IErrorNode)">
+            <summary>
+            Visits the error node.
+            </summary>
+            <param name="node">The node.</param>
+            <inheritdoc />
+            <remarks>The default implementation does nothing.</remarks>
+        </member>
+        <member name="T:CymbolBaseVisitor`1">
+            <summary>
+            This class provides an empty implementation of <see cref="T:ICymbolVisitor`1" />,
+            which can be extended to create a visitor which only needs to handle a subset
+            of the available methods.
+            Implements the <see cref="T:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1" />
+            Implements the <see cref="T:ICymbolVisitor`1" />
+            </summary>
+            <typeparam name="Result">The return type of the visit operation.</typeparam>
+            <seealso cref="T:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1" />
+            <seealso cref="T:ICymbolVisitor`1" />
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitFile(CymbolParser.FileContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitStat(CymbolParser.StatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.args" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitType(CymbolParser.TypeContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.type" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitExpr(CymbolParser.ExprContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitId(CymbolParser.IdContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.id" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:CymbolBaseVisitor`1.VisitInt(CymbolParser.IntContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="!:CymbolParser.int" />.
+            <para>
+            The default implementation returns the result of calling <see cref="M:Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)" />
+            on <paramref name="context" />.
+            </para>
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="T:CymbolLexer">
+            <summary>
+            Class CymbolLexer.
+            Implements the <see cref="T:Antlr4.Runtime.Lexer" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.Lexer" />
+        </member>
+        <member name="F:CymbolLexer.decisionToDFA">
+            <summary>
+            The decision to dfa
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.sharedContextCache">
+            <summary>
+            The shared context cache
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__0">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__1">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__2">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__3">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__4">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__5">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__6">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__7">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__8">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__9">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__10">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__11">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__12">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__13">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__14">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__15">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__16">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__17">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__18">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__19">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__20">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__21">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__22">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.T__23">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.STRING">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.BOOL">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.ID">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.INT">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.WS">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.COMMENT">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.channelNames">
+            <summary>
+            The channel names
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.modeNames">
+            <summary>
+            The mode names
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.ruleNames">
+            <summary>
+            The rule names
+            </summary>
+        </member>
+        <member name="M:CymbolLexer.#ctor(Antlr4.Runtime.ICharStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolLexer" /> class.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:CymbolLexer.#ctor(Antlr4.Runtime.ICharStream,System.IO.TextWriter,System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolLexer" /> class.
+            </summary>
+            <param name="input">The input.</param>
+            <param name="output">The output.</param>
+            <param name="errorOutput">The error output.</param>
+        </member>
+        <member name="F:CymbolLexer._LiteralNames">
+            <summary>
+            The literal names
+            </summary>
+        </member>
+        <member name="F:CymbolLexer._SymbolicNames">
+            <summary>
+            The symbolic names
+            </summary>
+        </member>
+        <member name="F:CymbolLexer.DefaultVocabulary">
+            <summary>
+            The default vocabulary
+            </summary>
+        </member>
+        <member name="P:CymbolLexer.Vocabulary">
+            <summary>
+            Get the vocabulary used by the recognizer.
+            </summary>
+            <value>The vocabulary.</value>
+            <remarks>Get the vocabulary used by the recognizer.</remarks>
+        </member>
+        <member name="P:CymbolLexer.GrammarFileName">
+            <summary>
+            For debugging and other purposes, might want the grammar name.
+            </summary>
+            <value>The name of the grammar file.</value>
+            <remarks>For debugging and other purposes, might want the grammar name.
+            Have ANTLR generate an implementation for this method.</remarks>
+        </member>
+        <member name="P:CymbolLexer.RuleNames">
+            <summary>
+            Used to print out token names like ID during debugging and
+            error reporting.
+            </summary>
+            <value>The rule names.</value>
+            <remarks>Used to print out token names like ID during debugging and
+            error reporting.  The generated parsers implement a method
+            that overrides this to point to their String[] tokenNames.</remarks>
+        </member>
+        <member name="P:CymbolLexer.ChannelNames">
+            <summary>
+            Gets the channel names.
+            </summary>
+            <value>The channel names.</value>
+        </member>
+        <member name="P:CymbolLexer.ModeNames">
+            <summary>
+            Gets the mode names.
+            </summary>
+            <value>The mode names.</value>
+        </member>
+        <member name="P:CymbolLexer.SerializedAtn">
+            <summary>
+            If this recognizer was generated, it will have a serialized ATN
+            representation of the grammar.
+            </summary>
+            <value>The serialized atn.</value>
+            <remarks>If this recognizer was generated, it will have a serialized ATN
+            representation of the grammar.
+            <p>For interpreters, we don't know their serialized ATN despite having
+            created the interpreter from it.</p></remarks>
+        </member>
+        <member name="M:CymbolLexer.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:CymbolLexer" /> class.
+            </summary>
+        </member>
+        <member name="F:CymbolLexer._serializedATN">
+            <summary>
+            The serialized atn
+            </summary>
+        </member>
+        <member name="F:CymbolLexer._ATN">
+            <summary>
+            The atn
+            </summary>
+        </member>
+        <member name="T:ICymbolListener">
+            <summary>
+            This interface defines a complete listener for a parse tree produced by
+            <see cref="T:CymbolParser" />.
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.Tree.IParseTreeListener" />
+        </member>
+        <member name="M:ICymbolListener.EnterFile(CymbolParser.FileContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.file" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitFile(CymbolParser.FileContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterStat(CymbolParser.StatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitStat(CymbolParser.StatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterBlock(CymbolParser.BlockContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.block" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.args" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.args" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterType(CymbolParser.TypeContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.type" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitType(CymbolParser.TypeContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.type" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterExpr(CymbolParser.ExprContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitExpr(CymbolParser.ExprContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterId(CymbolParser.IdContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="M:CymbolParser.id" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitId(CymbolParser.IdContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="M:CymbolParser.id" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.EnterInt(CymbolParser.IntContext)">
+            <summary>
+            Enter a parse tree produced by <see cref="!:CymbolParser.int" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="M:ICymbolListener.ExitInt(CymbolParser.IntContext)">
+            <summary>
+            Exit a parse tree produced by <see cref="!:CymbolParser.int" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+        </member>
+        <member name="T:CymbolParser">
+            <summary>
+            Class CymbolParser.
+            Implements the <see cref="T:Antlr4.Runtime.Parser" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.Parser" />
+        </member>
+        <member name="F:CymbolParser.decisionToDFA">
+            <summary>
+            The decision to dfa
+            </summary>
+        </member>
+        <member name="F:CymbolParser.sharedContextCache">
+            <summary>
+            The shared context cache
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__0">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__1">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__2">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__3">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__4">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__5">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__6">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__7">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__8">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__9">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__10">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__11">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__12">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__13">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__14">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__15">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__16">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__17">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__18">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__19">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__20">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__21">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__22">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.T__23">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.STRING">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.BOOL">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.ID">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.INT">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.WS">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.COMMENT">
+            <summary>
+            The t 0
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_file">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_functionDecl">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_formalParameters">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_formalParameter">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_stat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_block">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_assignStat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_ifStat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_forStat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_returnStat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_args">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_printStat">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_varDecl">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_type">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_expr">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_id">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.RULE_int">
+            <summary>
+            The rule file
+            </summary>
+        </member>
+        <member name="F:CymbolParser.ruleNames">
+            <summary>
+            The rule names
+            </summary>
+        </member>
+        <member name="F:CymbolParser._LiteralNames">
+            <summary>
+            The literal names
+            </summary>
+        </member>
+        <member name="F:CymbolParser._SymbolicNames">
+            <summary>
+            The symbolic names
+            </summary>
+        </member>
+        <member name="F:CymbolParser.DefaultVocabulary">
+            <summary>
+            The default vocabulary
+            </summary>
+        </member>
+        <member name="P:CymbolParser.Vocabulary">
+            <summary>
+            Get the vocabulary used by the recognizer.
+            </summary>
+            <value>The vocabulary.</value>
+            <remarks>Get the vocabulary used by the recognizer.</remarks>
+        </member>
+        <member name="P:CymbolParser.GrammarFileName">
+            <summary>
+            For debugging and other purposes, might want the grammar name.
+            </summary>
+            <value>The name of the grammar file.</value>
+            <remarks>For debugging and other purposes, might want the grammar name.
+            Have ANTLR generate an implementation for this method.</remarks>
+        </member>
+        <member name="P:CymbolParser.RuleNames">
+            <summary>
+            Used to print out token names like ID during debugging and
+            error reporting.
+            </summary>
+            <value>The rule names.</value>
+            <remarks>Used to print out token names like ID during debugging and
+            error reporting.  The generated parsers implement a method
+            that overrides this to point to their String[] tokenNames.</remarks>
+        </member>
+        <member name="P:CymbolParser.SerializedAtn">
+            <summary>
+            If this recognizer was generated, it will have a serialized ATN
+            representation of the grammar.
+            </summary>
+            <value>The serialized atn.</value>
+            <remarks>If this recognizer was generated, it will have a serialized ATN
+            representation of the grammar.
+            <p>For interpreters, we don't know their serialized ATN despite having
+            created the interpreter from it.</p></remarks>
+        </member>
+        <member name="M:CymbolParser.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:CymbolParser" /> class.
+            </summary>
+        </member>
+        <member name="M:CymbolParser.#ctor(Antlr4.Runtime.ITokenStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser" /> class.
+            </summary>
+            <param name="input">The input.</param>
+        </member>
+        <member name="M:CymbolParser.#ctor(Antlr4.Runtime.ITokenStream,System.IO.TextWriter,System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser" /> class.
+            </summary>
+            <param name="input">The input.</param>
+            <param name="output">The output.</param>
+            <param name="errorOutput">The error output.</param>
+        </member>
+        <member name="T:CymbolParser.FileContext">
+            <summary>
+            Class FileContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.FileContext.functionDecl">
+            <summary>
+            Functions the decl.
+            </summary>
+            <returns>FunctionDeclContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.FileContext.functionDecl(System.Int32)">
+            <summary>
+            Functions the decl.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>FunctionDeclContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FileContext.varDecl">
+            <summary>
+            Variables the decl.
+            </summary>
+            <returns>VarDeclContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.FileContext.varDecl(System.Int32)">
+            <summary>
+            Variables the decl.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>VarDeclContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FileContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.FileContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.FileContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.FileContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FileContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FileContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.file">
+            <summary>
+            Files this instance.
+            </summary>
+            <returns>FileContext.</returns>
+        </member>
+        <member name="T:CymbolParser.FunctionDeclContext">
+            <summary>
+            Class FunctionDeclContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.type">
+            <summary>
+            Types this instance.
+            </summary>
+            <returns>TypeContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.block">
+            <summary>
+            Blocks this instance.
+            </summary>
+            <returns>BlockContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.formalParameters">
+            <summary>
+            Formals the parameters.
+            </summary>
+            <returns>FormalParametersContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.FunctionDeclContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.FunctionDeclContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FunctionDeclContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.functionDecl">
+            <summary>
+            Functions the decl.
+            </summary>
+            <returns>FunctionDeclContext.</returns>
+        </member>
+        <member name="T:CymbolParser.FormalParametersContext">
+            <summary>
+            Class FormalParametersContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.formalParameter">
+            <summary>
+            Formals the parameter.
+            </summary>
+            <returns>FormalParameterContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.formalParameter(System.Int32)">
+            <summary>
+            Formals the parameter.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>FormalParameterContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.FormalParametersContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.FormalParametersContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FormalParametersContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.formalParameters">
+            <summary>
+            Formals the parameters.
+            </summary>
+            <returns>FormalParametersContext.</returns>
+        </member>
+        <member name="T:CymbolParser.FormalParameterContext">
+            <summary>
+            Class FormalParameterContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.type">
+            <summary>
+            Types this instance.
+            </summary>
+            <returns>TypeContext.</returns>
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.FormalParameterContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.FormalParameterContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.FormalParameterContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.formalParameter">
+            <summary>
+            Formals the parameter.
+            </summary>
+            <returns>FormalParameterContext.</returns>
+        </member>
+        <member name="T:CymbolParser.StatContext">
+            <summary>
+            Class StatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.StatContext.block">
+            <summary>
+            Blocks this instance.
+            </summary>
+            <returns>BlockContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.varDecl">
+            <summary>
+            Variables the decl.
+            </summary>
+            <returns>VarDeclContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.ifStat">
+            <summary>
+            Ifs the stat.
+            </summary>
+            <returns>IfStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.forStat">
+            <summary>
+            Fors the stat.
+            </summary>
+            <returns>ForStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.returnStat">
+            <summary>
+            Returns the stat.
+            </summary>
+            <returns>ReturnStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.assignStat">
+            <summary>
+            Assigns the stat.
+            </summary>
+            <returns>AssignStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.printStat">
+            <summary>
+            Prints the stat.
+            </summary>
+            <returns>PrintStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.StatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.StatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.StatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.StatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.StatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.StatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.stat">
+            <summary>
+            Stats this instance.
+            </summary>
+            <returns>StatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.BlockContext">
+            <summary>
+            Class BlockContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.BlockContext.stat">
+            <summary>
+            Stats this instance.
+            </summary>
+            <returns>StatContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.BlockContext.stat(System.Int32)">
+            <summary>
+            Stats the specified i.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>StatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.BlockContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.BlockContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.BlockContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.BlockContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.BlockContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.BlockContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.block">
+            <summary>
+            Blocks this instance.
+            </summary>
+            <returns>BlockContext.</returns>
+        </member>
+        <member name="T:CymbolParser.AssignStatContext">
+            <summary>
+            Class AssignStatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.AssignStatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.AssignStatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.AssignStatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.assignStat">
+            <summary>
+            Assigns the stat.
+            </summary>
+            <returns>AssignStatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.IfStatContext">
+            <summary>
+            Class IfStatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.IfStatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.stat">
+            <summary>
+            Stats this instance.
+            </summary>
+            <returns>StatContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.stat(System.Int32)">
+            <summary>
+            Stats the specified i.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>StatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.IfStatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.IfStatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IfStatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.ifStat">
+            <summary>
+            Ifs the stat.
+            </summary>
+            <returns>IfStatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.ForStatContext">
+            <summary>
+            Class ForStatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.ForStatContext.assignStat">
+            <summary>
+            Assigns the stat.
+            </summary>
+            <returns>AssignStatContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.assignStat(System.Int32)">
+            <summary>
+            Assigns the stat.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>AssignStatContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.block">
+            <summary>
+            Blocks this instance.
+            </summary>
+            <returns>BlockContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.ForStatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.ForStatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ForStatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.forStat">
+            <summary>
+            Fors the stat.
+            </summary>
+            <returns>ForStatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.ReturnStatContext">
+            <summary>
+            Class ReturnStatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.ReturnStatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ReturnStatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.ReturnStatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.ReturnStatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.ReturnStatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ReturnStatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ReturnStatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.returnStat">
+            <summary>
+            Returns the stat.
+            </summary>
+            <returns>ReturnStatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.ArgsContext">
+            <summary>
+            Class ArgsContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.ArgsContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.ArgsContext.expr(System.Int32)">
+            <summary>
+            Exprs the specified i.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ArgsContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.ArgsContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.ArgsContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.ArgsContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ArgsContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ArgsContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.args">
+            <summary>
+            Argumentses this instance.
+            </summary>
+            <returns>ArgsContext.</returns>
+        </member>
+        <member name="T:CymbolParser.PrintStatContext">
+            <summary>
+            Class PrintStatContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.PrintStatContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.PrintStatContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.PrintStatContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.PrintStatContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.PrintStatContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.PrintStatContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.PrintStatContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.printStat">
+            <summary>
+            Prints the stat.
+            </summary>
+            <returns>PrintStatContext.</returns>
+        </member>
+        <member name="T:CymbolParser.VarDeclContext">
+            <summary>
+            Class VarDeclContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.type">
+            <summary>
+            Types this instance.
+            </summary>
+            <returns>TypeContext.</returns>
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.VarDeclContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.VarDeclContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.VarDeclContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.varDecl">
+            <summary>
+            Variables the decl.
+            </summary>
+            <returns>VarDeclContext.</returns>
+        </member>
+        <member name="T:CymbolParser.TypeContext">
+            <summary>
+            Class TypeContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.TypeContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.TypeContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.TypeContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.TypeContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.TypeContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.TypeContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.type">
+            <summary>
+            Types this instance.
+            </summary>
+            <returns>TypeContext.</returns>
+        </member>
+        <member name="T:CymbolParser.ExprContext">
+            <summary>
+            Class ExprContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.ExprContext.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext[].</returns>
+        </member>
+        <member name="M:CymbolParser.ExprContext.expr(System.Int32)">
+            <summary>
+            Exprs the specified i.
+            </summary>
+            <param name="i">The i.</param>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ExprContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.ExprContext.INT">
+            <summary>
+            Ints this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.ExprContext.args">
+            <summary>
+            Argumentses this instance.
+            </summary>
+            <returns>ArgsContext.</returns>
+        </member>
+        <member name="M:CymbolParser.ExprContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.ExprContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.ExprContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.ExprContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ExprContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.ExprContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.expr">
+            <summary>
+            Exprs this instance.
+            </summary>
+            <returns>ExprContext.</returns>
+        </member>
+        <member name="M:CymbolParser.expr(System.Int32)">
+            <summary>
+            Exprs the specified p.
+            </summary>
+            <param name="_p">The p.</param>
+            <returns>ExprContext.</returns>
+            <exception cref="T:Antlr4.Runtime.FailedPredicateException">Precpred(Context, 8)
+            or
+            Precpred(Context, 7)
+            or
+            Precpred(Context, 6)
+            or
+            Precpred(Context, 5)</exception>
+        </member>
+        <member name="T:CymbolParser.IdContext">
+            <summary>
+            Class IdContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.IdContext.ID">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.IdContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.IdContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.IdContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.IdContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IdContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IdContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.id">
+            <summary>
+            Identifiers this instance.
+            </summary>
+            <returns>IdContext.</returns>
+        </member>
+        <member name="T:CymbolParser.IntContext">
+            <summary>
+            Class IntContext.
+            Implements the <see cref="T:Antlr4.Runtime.ParserRuleContext" />
+            </summary>
+            <seealso cref="T:Antlr4.Runtime.ParserRuleContext" />
+        </member>
+        <member name="M:CymbolParser.IntContext.INT">
+            <summary>
+            Ints this instance.
+            </summary>
+            <returns>ITerminalNode.</returns>
+        </member>
+        <member name="M:CymbolParser.IntContext.#ctor(Antlr4.Runtime.ParserRuleContext,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CymbolParser.IntContext" /> class.
+            </summary>
+            <param name="parent">The parent.</param>
+            <param name="invokingState">State of the invoking.</param>
+        </member>
+        <member name="P:CymbolParser.IntContext.RuleIndex">
+            <summary>
+            Gets the index of the rule.
+            </summary>
+            <value>The index of the rule.</value>
+        </member>
+        <member name="M:CymbolParser.IntContext.EnterRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Enters the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IntContext.ExitRule(Antlr4.Runtime.Tree.IParseTreeListener)">
+            <summary>
+            Exits the rule.
+            </summary>
+            <param name="listener">The listener.</param>
+        </member>
+        <member name="M:CymbolParser.IntContext.Accept``1(Antlr4.Runtime.Tree.IParseTreeVisitor{``0})">
+            <summary>
+            Accepts the specified visitor.
+            </summary>
+            <typeparam name="TResult">The type of the t result.</typeparam>
+            <param name="visitor">The visitor.</param>
+            <returns>TResult.</returns>
+        </member>
+        <member name="M:CymbolParser.int">
+            <summary>
+            Ints this instance.
+            </summary>
+            <returns>IntContext.</returns>
+        </member>
+        <member name="M:CymbolParser.Sempred(Antlr4.Runtime.RuleContext,System.Int32,System.Int32)">
+            <summary>
+            Sempreds the specified localctx.
+            </summary>
+            <param name="_localctx">The localctx.</param>
+            <param name="ruleIndex">Index of the rule.</param>
+            <param name="predIndex">Index of the pred.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="M:CymbolParser.expr_sempred(CymbolParser.ExprContext,System.Int32)">
+            <summary>
+            Exprs the sempred.
+            </summary>
+            <param name="_localctx">The localctx.</param>
+            <param name="predIndex">Index of the pred.</param>
+            <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        </member>
+        <member name="F:CymbolParser._serializedATN">
+            <summary>
+            The serialized atn
+            </summary>
+        </member>
+        <member name="F:CymbolParser._ATN">
+            <summary>
+            The atn
+            </summary>
+        </member>
+        <member name="T:ICymbolVisitor`1">
+            <summary>
+            This interface defines a complete generic visitor for a parse tree produced
+            by <see cref="T:CymbolParser" />.
+            Implements the <see cref="T:Antlr4.Runtime.Tree.IParseTreeVisitor`1" />
+            </summary>
+            <typeparam name="Result">The return type of the visit operation.</typeparam>
+            <seealso cref="T:Antlr4.Runtime.Tree.IParseTreeVisitor`1" />
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitFile(CymbolParser.FileContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.file" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitFunctionDecl(CymbolParser.FunctionDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.functionDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitFormalParameters(CymbolParser.FormalParametersContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.formalParameters" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitFormalParameter(CymbolParser.FormalParameterContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.formalParameter" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitStat(CymbolParser.StatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.stat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitBlock(CymbolParser.BlockContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.block" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitAssignStat(CymbolParser.AssignStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.assignStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitIfStat(CymbolParser.IfStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.ifStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitForStat(CymbolParser.ForStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.forStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitReturnStat(CymbolParser.ReturnStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.returnStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitArgs(CymbolParser.ArgsContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.args" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitPrintStat(CymbolParser.PrintStatContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.printStat" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitVarDecl(CymbolParser.VarDeclContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.varDecl" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitType(CymbolParser.TypeContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.type" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitExpr(CymbolParser.ExprContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.expr" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitId(CymbolParser.IdContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="M:CymbolParser.id" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+        <member name="M:ICymbolVisitor`1.VisitInt(CymbolParser.IntContext)">
+            <summary>
+            Visit a parse tree produced by <see cref="!:CymbolParser.int" />.
+            </summary>
+            <param name="context">The parse tree.</param>
+            <returns>Result.</returns>
+            <return>The visitor result.</return>
+        </member>
+    </members>
+</doc>

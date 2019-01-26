@@ -49,6 +49,7 @@ namespace CMTC.Core.SymTable
             public GlobalScope(IScope enclosing) : base(enclosing)
             {
                 _symbols.Add("int", new Symbol("int", 0, Symbol.SymbolType.INT));
+                _symbols.Add("char", new Symbol("char", 0, SymbolType.CHAR_ARRAY_P));
                 _symbols.Add("void", new Symbol("void", 0, Symbol.SymbolType.VOID));
             }
 

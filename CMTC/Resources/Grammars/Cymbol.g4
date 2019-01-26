@@ -54,10 +54,11 @@ printStat
 	;
 
 varDecl
-	:   type ';'
+	:   type ID ';'
 	;
 
 type: 'int'
+	| 'char'
 	| 'void'
 	; 
 
@@ -70,5 +71,6 @@ expr:   '-' expr
 	|   ID								
 	|   INT								
 	|   '(' expr ')'					
-	|   ID '(' args? ')'				
+	|   ID '(' args? ')'
+	|	ID '[' INT ']'				
 	;

@@ -13,6 +13,7 @@
 // ***********************************************************************
 using CMTC.Core;
 using CMTC.Utilities;
+using System;
 
 /// <summary>
 /// The CMTC namespace.
@@ -31,7 +32,10 @@ namespace CMTC
         static void Main(string[] args)
         {
             ApplicationSettings.AppySettings(args);
-            CMTCompiler.Execute(FileUtilities.ReadFile(args[args.Length - 1]));
+            CMTCompiler.Execute(args[args.Length - 1], FileUtilities.ReadFile(args[args.Length - 1]));
+            
+            Console.WriteLine("Done!");
+            Console.ReadKey();
         }
     }
 }

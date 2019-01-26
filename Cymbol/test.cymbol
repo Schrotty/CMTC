@@ -1,9 +1,5 @@
-﻿int u;
-
-int main()
+﻿// hello there!
+int main(int i, int j)
 {
-	int integer;
-	integer = 42;
-
-	return integer;
+	return i + j;
 }

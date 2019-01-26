@@ -11,6 +11,7 @@
 // </copyright>
 // <summary></summary>
 // ***********************************************************************
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,6 +43,7 @@ namespace CMTC.Core.SymTable
             /// The enclosing
             /// </summary>
             private IScope _enclosing;
+
             /// <summary>
             /// Gets the child.
             /// </summary>
@@ -157,6 +159,11 @@ namespace CMTC.Core.SymTable
                 }
 
                 return symbol;
+            }
+
+            internal void IncreaseIndex()
+            {
+                throw new NotImplementedException();
             }
 
             /// <summary>

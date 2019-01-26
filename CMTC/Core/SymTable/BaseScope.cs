@@ -37,7 +37,7 @@ namespace CMTC.Core.SymTable
         /// </summary>
         private IScope _enclosing;
 
-        private int _localMaxIndex = 1;
+        private int _localMaxIndex = 0;
 
         /// <summary>
         /// Gets the children.
@@ -165,16 +165,22 @@ namespace CMTC.Core.SymTable
 
             if (symbol == null)
             {
-                foreach (var child in Children)
+                symbol = _enclosing.GetSymbolLocal(name);
+                if (symbol == null)
                 {
-                    symbol = child.GetSymbol(name);
-                    if (symbol != null)
+                    foreach (var child in Children)
                     {
-                        return symbol;
+                        symbol = child.GetSymbol(name);
+                        if (symbol != null)
+                        {
+                            return symbol;
+                        }
                     }
+
+                    return GetSymbolGlobal(name);
                 }
 
-                return GetSymbolGlobal(name);
+                return symbol;
             }
 
             return b ? symbol : null;
@@ -193,7 +199,8 @@ namespace CMTC.Core.SymTable
                 tmp = tmp.GetEnclosingScope();
                 if (tmp.GetScopeName().Equals("global"))
                 {
-                    return tmp.GetSymbol(name);
+                    _symbols.TryGetValue(name, out var symbol);
+                    return symbol;
                 }
             }
             
@@ -262,6 +269,7 @@ namespace CMTC.Core.SymTable
         /// <exception cref="System.NotImplementedException"></exception>
         public int GetIndex()
         {
+            if (_symbols.Count <= 0) return _localMaxIndex;
             var pos = _symbols.Max(pair =>
             {
                 return pair.Value.Position;

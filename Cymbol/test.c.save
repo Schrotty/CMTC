@@ -1,0 +1,14 @@
+#include<stdio.h>c
+
+﻿int main()
+{
+	int i;
+	i = 21;
+
+	if (i == 21)
+	{
+		printf(21);
+	}
+
+	return i + 21;
+}

@@ -5,10 +5,19 @@ STRING
 	;
 
 BOOL
-	: 'true' | 'false'
+	: 'true'
+	| 'false'
 	;
 
-ID  : LETTER (LETTER | DIGIT)*
+ID  : POINTER? LETTER (LETTER | DIGIT)* ARRAY?
+	;
+
+POINTER
+	: '*'
+	;
+
+ARRAY
+	: '[]'
 	;
 	
 INT : DIGIT+
