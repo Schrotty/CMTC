@@ -3,6 +3,14 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Custom
+.vs
+.vscode
+*.c
+*.ll
+*.save
+CMTC.templates.gdp.xml
+
 # User-specific files
 *.suo
 *.user
